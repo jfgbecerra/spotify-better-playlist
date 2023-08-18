@@ -1,4 +1,4 @@
-import { DefaultSession } from "next-auth";
+import { DefaultSession } from 'next-auth';
 
 interface AuthUser {
   name: string;
@@ -10,7 +10,7 @@ interface AuthUser {
   expires_at: number;
 }
 
-export interface AuthSession extends Omit<DefaultSession, "user"> {
+export interface AuthSession extends Omit<DefaultSession, 'user'> {
   user: AuthUser;
 }
 
