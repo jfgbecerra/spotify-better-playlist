@@ -1,19 +1,13 @@
-import {
-    Album,
-    Artist,
-    AuthSession,
-    Category,
-    Playlist,
-    Track,
-    TrackAnalysis,
-} from '@/types/types';
+import { AuthSession, Playlists } from '@/types/types';
 import { customGet } from '@/utils/serverUtils';
 
 export const getUserPlaylists = async (
-session: AuthSession
-): Promise<Album[]> => {
-return customGet(
-    'https://api.spotify.com/v1/me/playlists',
+  session: AuthSession,
+  limit = 20,
+  offset = 0
+): Promise<Playlists> => {
+  return customGet(
+    `https://api.spotify.com/v1/me/playlists?limit=${limit}&offset=${offset}`,
     session
-).then((resp) => resp);
+  ).then((resp) => resp);
 };
