@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Inter } from 'next/font/google';
 import { NextAuthProvider } from '@/providers/NextAuthProvider';
 import { getAuthSession } from '@/utils/serverUtils';
+import Header from '@/components/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,11 +21,12 @@ export default async function RootLayout({
 
   return (
     <html lang='en'>
-        <body className={inter.className}>
-          <NextAuthProvider session={session}>
-            {children}
-          </NextAuthProvider>
-        </body>
+      <body className={inter.className}>
+        <NextAuthProvider session={session}>
+          <Header />
+          {children}
+        </NextAuthProvider>
+      </body>
     </html>
   );
 }
