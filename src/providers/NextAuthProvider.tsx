@@ -7,6 +7,6 @@ type Props = {
   session: any;
 };
 
-export const NextAuthProvider = ({ children, session }: Props) => {
+export default function NextAuthProvider({ children, session }: Props) {
   return <SessionProvider session={session}>{children}</SessionProvider>;
-};
+}

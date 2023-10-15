@@ -1,8 +1,8 @@
 'use client';
 
 import { AuthSession } from '@/types/types';
-import { NextAuthProvider } from './NextAuthProvider';
-import { UIProvider } from './NextUIProvider';
+import NextAuthProvider from './NextAuthProvider';
+import UIProvider from './NextUIProvider';
 
 interface ProviderProps {
   /** Component children to render */
@@ -12,10 +12,10 @@ interface ProviderProps {
   session: AuthSession | null;
 }
 
-export const Providers = ({ children, session }: ProviderProps) => {
+export default function Providers({ children, session }: ProviderProps) {
   return (
     <NextAuthProvider session={session}>
       <UIProvider>{children}</UIProvider>
     </NextAuthProvider>
   );
-};
+}

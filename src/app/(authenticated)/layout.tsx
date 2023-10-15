@@ -2,7 +2,7 @@ import '@/app/globals.css';
 import * as React from 'react';
 import { Inter } from 'next/font/google';
 import { getAuthSession } from '@/utils/serverUtils';
-import { Providers } from '@/providers';
+import Providers from '@/providers';
 import Header from '@/components/Header';
 
 const inter = Inter({ subsets: ['latin'] });
