@@ -1,9 +1,16 @@
 import { getAuthSession } from '@/utils/serverUtils';
 import Image from 'next/image';
 import logoImage from '@/assets/playlist.png';
-import { LoginButton, LogoutButton } from './Buttons';
+import LoginButton from './buttons/LoginButton';
+import LogoutButton from './buttons/LogoutButton';
 import { AuthSession } from '@/types/types';
-import { Navbar } from '@nextui-org/navbar';
+import {
+  Navbar,
+  NavbarContent,
+  NavbarItem,
+  NavbarBrand,
+} from '@nextui-org/navbar';
+import PlaylistIcon from './PlaylistIcon';
 
 export default async function NavigationBar() {
   // Handle checking if the session is valid
@@ -17,5 +24,15 @@ export default async function NavigationBar() {
     }
   };
 
-  return <Navbar>{getCorrectButton(session)}</Navbar>;
+  return (
+    <Navbar isBordered={true}>
+      <NavbarBrand className='gap-2'>
+        <PlaylistIcon />
+        <p className='font-bold text-inherit'>Better Playlist</p>
+      </NavbarBrand>
+      <NavbarContent justify='end'>
+        <NavbarItem>{getCorrectButton(session)}</NavbarItem>
+      </NavbarContent>
+    </Navbar>
+  );
 }
