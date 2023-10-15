@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { NextAuthProvider } from '@/providers/NextAuthProvider';
 import { getAuthSession } from '@/utils/serverUtils';
 import Header from '@/components/Header';
+import { UIProvider } from '@/providers/NextUIProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,8 +24,10 @@ export default async function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <NextAuthProvider session={session}>
-          <Header />
-          {children}
+          <UIProvider>
+            <Header />
+            {children}
+          </UIProvider>
         </NextAuthProvider>
       </body>
     </html>
