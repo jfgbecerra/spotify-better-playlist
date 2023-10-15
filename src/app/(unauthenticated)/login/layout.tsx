@@ -1,9 +1,8 @@
 import '@/app/globals.css';
 import * as React from 'react';
 import { Inter } from 'next/font/google';
-import { NextAuthProvider } from '@/providers/NextAuthProvider';
 import { getAuthSession } from '@/utils/serverUtils';
-import { UIProvider } from '@/providers/NextUIProvider';
+import { Providers } from '@/providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,9 +21,7 @@ export default async function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <NextAuthProvider session={session}>
-          <UIProvider>{children}</UIProvider>
-        </NextAuthProvider>
+        <Providers session={session}>{children}</Providers>
       </body>
     </html>
   );
