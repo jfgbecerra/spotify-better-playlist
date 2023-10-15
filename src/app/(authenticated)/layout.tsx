@@ -22,10 +22,7 @@ export default async function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <Providers session={session}>
-          <Header />
-          {children}
-        </Providers>
+        <Providers session={session}>{children}</Providers>
       </body>
     </html>
   );
