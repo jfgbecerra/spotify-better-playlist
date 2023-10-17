@@ -1,6 +1,4 @@
 import { getAuthSession } from '@/utils/serverUtils';
-import Image from 'next/image';
-import logoImage from '@/assets/playlist.png';
 import LoginButton from './buttons/LoginButton';
 import LogoutButton from './buttons/LogoutButton';
 import { AuthSession } from '@/types/types';
@@ -11,12 +9,13 @@ import {
   NavbarBrand,
 } from '@nextui-org/navbar';
 import PlaylistIcon from './PlaylistIcon';
+import ThemeSwitcher from './buttons/theme-switcher/ThemeSwitcher';
 
 export default async function NavigationBar() {
   // Handle checking if the session is valid
   const session = await getAuthSession();
 
-  const getCorrectButton = (session: AuthSession | null) => {
+  const getCorrectAuthButton = (session: AuthSession | null) => {
     if (!session) {
       return <LoginButton />;
     } else {
@@ -31,7 +30,8 @@ export default async function NavigationBar() {
         <p className='font-bold text-inherit'>Better Playlist</p>
       </NavbarBrand>
       <NavbarContent justify='end'>
-        <NavbarItem>{getCorrectButton(session)}</NavbarItem>
+        <ThemeSwitcher />
+        <NavbarItem>{getCorrectAuthButton(session)}</NavbarItem>
       </NavbarContent>
     </Navbar>
   );

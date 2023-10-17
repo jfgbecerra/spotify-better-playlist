@@ -2,7 +2,8 @@
 
 import { AuthSession } from '@/types/types';
 import NextAuthProvider from './NextAuthProvider';
-import UIProvider from './NextUIProvider';
+import UIProvider from './UIProvider';
+import UIThemeProvider from './UIThemeProvider';
 
 interface ProviderProps {
   /** Component children to render */
@@ -15,7 +16,9 @@ interface ProviderProps {
 export default function Providers({ children, session }: ProviderProps) {
   return (
     <NextAuthProvider session={session}>
-      <UIProvider>{children}</UIProvider>
+      <UIProvider>
+        <UIThemeProvider>{children}</UIThemeProvider>
+      </UIProvider>
     </NextAuthProvider>
   );
 }
