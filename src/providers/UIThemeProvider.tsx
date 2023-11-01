@@ -8,7 +8,11 @@ type Props = {
 
 export default function UIThemeProvider({ children }: Props) {
   return (
-    <NextThemesProvider attribute='class' defaultTheme='dark'>
+    <NextThemesProvider
+      attribute='class'
+      defaultTheme='dark'
+      storageKey='theme'
+    >
       {children}
     </NextThemesProvider>
   );

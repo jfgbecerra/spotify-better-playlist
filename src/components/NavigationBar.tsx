@@ -9,7 +9,7 @@ import {
   NavbarBrand,
 } from '@nextui-org/navbar';
 import PlaylistIcon from './PlaylistIcon';
-import ThemeSwitcher from './buttons/theme-switcher/ThemeSwitcher';
+import ThemeSwitcher from './buttons/ThemeSwitcher';
 
 export default async function NavigationBar() {
   // Handle checking if the session is valid
@@ -27,7 +27,7 @@ export default async function NavigationBar() {
     <Navbar isBordered={true}>
       <NavbarBrand className='gap-2'>
         <PlaylistIcon />
-        <p className='font-bold text-inherit'>Better Playlist</p>
+        <p className='font-bold text-inherit dark:text-white'>Better Playlist</p>
       </NavbarBrand>
       <NavbarContent justify='end'>
         <ThemeSwitcher />
