@@ -7,6 +7,10 @@ jobs:
       image: 'ubuntu-2004:current'
     steps:
       - checkout
+      # install dependencies
+      - run:
+          name: install dependencies
+          command: npm install
       - qodana/scan
 workflows:
   main:
