@@ -24,10 +24,12 @@ export default async function NavigationBar() {
   };
 
   return (
-    <Navbar isBordered={true}>
+    <Navbar className='bg-card mb-2 dark:text-white'>
       <NavbarBrand className='gap-2'>
         <PlaylistIcon />
-        <p className='font-bold text-inherit dark:text-white'>Better Playlist</p>
+        <p className='font-bold text-inherit dark:text-white'>
+          Better Playlist
+        </p>
       </NavbarBrand>
       <NavbarContent justify='end'>
         <ThemeSwitcher />
