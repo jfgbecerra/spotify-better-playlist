@@ -13,9 +13,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        backgroung: 'hsl(var(--background) / <alpha-value>)',
+        backgroung: 'var(--background)',
         foreground: 'hsl(var(--foreground) / <alpha-value>)',
-        cardBackground: '#121212',
+        cardBackground: 'var(--card-background)',
         card: 'hsl(var(--card) / <alpha-value>)',
         cardForeground: 'hsl(var(--card-foreground) / <alpha-value>)',
         popover: 'hsl(var(--popover) / <alpha-value>)',

@@ -24,7 +24,7 @@ export default async function NavigationBar() {
   };
 
   return (
-    <Navbar className='bg-card mb-2 dark:text-white'>
+    <Navbar className='bg-cardBackground mb-2 dark:text-white'>
       <NavbarBrand className='gap-2'>
         <PlaylistIcon />
         <p className='font-bold text-inherit dark:text-white'>

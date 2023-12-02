@@ -7,5 +7,5 @@ type Props = {
 };
 
 export default function UIProvider({ children }: Props) {
-  return <NextUIProvider>{children}</NextUIProvider>;
+  return <NextUIProvider className='h-full'>{children}</NextUIProvider>;
 }

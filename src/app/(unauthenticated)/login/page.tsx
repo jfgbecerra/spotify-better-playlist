@@ -1,3 +1,9 @@
+import NavigationBar from "@/components/NavigationBar";
+
 export default function Login() {
-  return <div></div>;
-}
+    return (
+      <div className='h-full'>
+        <NavigationBar />
+      </div>
+    );
+  }
