@@ -4,7 +4,6 @@ import { cookies } from 'next/headers';
 import { Inter } from 'next/font/google';
 import { getAuthSession } from '@/utils/serverUtils';
 import Providers from '@/providers';
-import NavigationBar from '@/components/NavigationBar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,7 +31,6 @@ export default async function RootLayout({
     <html lang='en' className={theme} style={{ colorScheme: theme }}>
       <body className={inter.className}>
         <Providers session={session}>
-          <NavigationBar />
           {children}
         </Providers>
       </body>

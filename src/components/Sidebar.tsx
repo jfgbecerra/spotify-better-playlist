@@ -11,9 +11,9 @@ export default async function Sidebar() {
   const playLists = await getUserPlaylists(session, 50);
 
   return (
-    <aside className='flex-col'>
+    <aside className='bg-cardBackground h-full w-80 flex-col overflow-auto scrollbar-hide rounded-lg ml-2'>
       {playLists.items.map((playlist) => {
-        return <div key={playlist.id}>{playlist.name}</div>;
+        return <p key={playlist.id}>{playlist.name}</p>;
       })}
     </aside>
   );
