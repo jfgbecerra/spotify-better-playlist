@@ -4,10 +4,11 @@ import { AuthSession } from '@/types/types';
 import NextAuthProvider from './NextAuthProvider';
 import UIProvider from './UIProvider';
 import UIThemeProvider from './UIThemeProvider';
+import { ReactNode } from 'react';
 
 interface ProviderProps {
   /** Component children to render */
-  children: React.ReactNode;
+  children: ReactNode;
 
   /** User authentication session to make available to next auth */
   session: AuthSession | null;

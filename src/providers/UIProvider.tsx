@@ -1,9 +1,10 @@
 'use client';
 
 import { NextUIProvider } from '@nextui-org/react';
+import { ReactNode } from 'react';
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export default function UIProvider({ children }: Props) {
