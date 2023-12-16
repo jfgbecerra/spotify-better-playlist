@@ -9,8 +9,11 @@ export default async function ContentPane() {
   }
 
   return (
-    <div className='flex h-full w-full rounded-lg bg-cardBackground'>
-      <DroppableContainer id='droppable-destination'>
+    <div className='flex h-full w-full'>
+      <DroppableContainer
+        id='droppable-destination'
+        className='flex h-full w-full rounded-lg bg-cardBackground'
+      >
         I am Droppable!
       </DroppableContainer>
     </div>

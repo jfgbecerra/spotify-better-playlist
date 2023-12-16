@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { Droppable } from '@hello-pangea/dnd';
+import { Droppable, DroppableProvided } from '@hello-pangea/dnd';
 
 type Props = {
   /** The children to render */
@@ -25,7 +25,7 @@ export default function DroppableContainer({
 }: Props) {
   return (
     <Droppable droppableId={id} isDropDisabled={isDropDisabled}>
-      {(provided) => (
+      {(provided: DroppableProvided) => (
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}

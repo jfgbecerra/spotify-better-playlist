@@ -1,7 +1,11 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { Draggable } from '@hello-pangea/dnd';
+import {
+  Draggable,
+  DraggableProvided,
+  DraggableStateSnapshot,
+} from '@hello-pangea/dnd';
 
 type Props = {
   /** The children to render */
@@ -25,7 +29,7 @@ export default function DraggableContainer({
 }: Props) {
   return (
     <Draggable draggableId={id} index={ind}>
-      {(provided, snapshot) => (
+      {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <div
           className={className}
           ref={provided.innerRef}
