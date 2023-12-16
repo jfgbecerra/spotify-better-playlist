@@ -30,7 +30,7 @@ export default async function RootLayout({
   return (
     <html lang='en' className={theme} style={{ colorScheme: theme }}>
       <body className={inter.className}>
-        <Providers session={session}>
+        <Providers session={session} skipDraggable={true}>
           {children}
         </Providers>
       </body>

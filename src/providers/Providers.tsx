@@ -13,14 +13,21 @@ interface ProviderProps {
 
   /** User authentication session to make available to next auth */
   session: AuthSession | null;
+
+  /** Whether or not to skip the draggable provider */
+  skipDraggable?: boolean;
 }
 
-export default function Providers({ children, session }: ProviderProps) {
+export default function Providers({
+  children,
+  session,
+  skipDraggable = false,
+}: ProviderProps) {
   return (
     <NextAuthProvider session={session}>
       <UIProvider>
         <UIThemeProvider>
-          <DraggableProvider>{children}</DraggableProvider>
+          <DraggableProvider skip={skipDraggable}>{children}</DraggableProvider>
         </UIThemeProvider>
       </UIProvider>
     </NextAuthProvider>
