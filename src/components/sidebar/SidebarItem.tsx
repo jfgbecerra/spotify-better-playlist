@@ -9,6 +9,7 @@ import { Skeleton } from '@nextui-org/react';
 import { useState } from 'react';
 
 type SidebarItemProps = {
+  /** The playlist to render */
   playlist: Playlist;
 };
 

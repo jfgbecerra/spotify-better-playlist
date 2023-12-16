@@ -1,4 +1,5 @@
 import { getAuthSession } from '@/utils/serverUtils';
+import DroppableContainer from '../DroppableContainer';
 
 export default async function ContentPane() {
   // Handle checking if the session is valid
@@ -8,6 +9,10 @@ export default async function ContentPane() {
   }
 
   return (
-    <div className='flex h-full w-full rounded-lg bg-cardBackground'></div>
+    <div className='flex h-full w-full rounded-lg bg-cardBackground'>
+      <DroppableContainer id='droppable-destination'>
+        I am Droppable!
+      </DroppableContainer>
+    </div>
   );
 }
