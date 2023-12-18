@@ -1,3 +1,5 @@
+'use server';
+
 import { AuthSession, Playlists, Tracks } from '@/types/types';
 import { customGet } from '@/utils/serverUtils';
 
