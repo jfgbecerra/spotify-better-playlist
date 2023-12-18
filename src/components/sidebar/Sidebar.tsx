@@ -16,7 +16,7 @@ export default async function Sidebar() {
   return (
     <aside className='flex h-full w-96'>
       <DroppableContainer
-        id='droppable-origin'
+        id='sidebar-origin'
         isDropDisabled={true}
         className='h-full w-full cursor-pointer flex-col overflow-auto rounded-lg bg-cardBackground p-1 scrollbar-hide'
       >
