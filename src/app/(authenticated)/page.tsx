@@ -10,7 +10,7 @@ export default function Home() {
         <Sidebar />
         <ContentPane />
       </div>
-      <p className='h-28'>Test</p>
+      <p className='h-28'>Testing</p>
     </div>
   );
 }
