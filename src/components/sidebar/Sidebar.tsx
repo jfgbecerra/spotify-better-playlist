@@ -19,6 +19,7 @@ export default async function Sidebar() {
         id='sidebar-origin'
         isDropDisabled={true}
         className='h-full w-full cursor-pointer flex-col overflow-auto rounded-lg bg-cardBackground p-1 scrollbar-hide'
+        type='playlist'
       >
         {playlists.items.map((playlist, ind) => {
           return (
