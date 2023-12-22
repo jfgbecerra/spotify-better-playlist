@@ -12,19 +12,19 @@ type Props = {
   skip?: boolean;
 };
 
+// TODO: Refactor this to use some of the formatting from this example:
+// https://codesandbox.io/p/sandbox/5v2yvpjn7n?file=%2Findex.js%3A67%2C30-67%2C38
+// It uses multiple containers and you can move subitems between them and both the parent and children
 export default function DraggableProvider({ children, skip = false }: Props) {
   // If we are skipping, then just return the children
   if (skip) return <>{children}</>;
 
-  const addPlaylistsTracks = usePlaylistStore(
-    (state) => state.addPlaylistsTracks
-  );
+  const addPlaylistsIds = usePlaylistStore((state) => state.addPlaylistId);
 
   async function hanldeAddPlaylist(result: DropResult) {
-    const auth = (await getSession()) as AuthSession;
     if (!result.destination) return;
 
-    addPlaylistsTracks(result.draggableId, result.destination.index, auth);
+    addPlaylistsIds(result.draggableId, result.destination.index);
   }
 
   // Function to handle when a playlist if dragged on to editor content pane
