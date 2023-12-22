@@ -1,40 +1,69 @@
-import { getPlaylist, getTracks } from '@/lib/playlist-data-accessor';
-import { Playlist } from '@/types/types';
-import { getAuthSession } from '@/utils/serverUtils';
-import React from 'react';
+'use client';
+
+import { getTracks } from '@/lib/playlist-data-accessor';
+import React, { useEffect, useState } from 'react';
 import DroppableContainer from '../DroppableContainer';
 import DraggableContainer from '../DraggableContainer';
+import { getSession } from 'next-auth/react';
+import { AuthSession, Tracks } from '@/types/types';
+import PlaylistEditorColumnTracks from './PlaylistEditorColumnTracks';
+import { v4 as uuid } from 'uuid';
+import PlaylistEditorColumnHeader from './PLaylistEditorColumnHeader';
 
-type SidebarItemProps = {
-  /** The playlist to render */
-  playlist: Playlist;
+type PlaylistEditorColumnProps = {
+  /** The playlist id to render */
+  playlistId: string;
+
+  /** The index of the playlist */
+  ind: number;
 };
 
-export default async function PlaylistEditorColumn({
-  playlist,
-}: SidebarItemProps) {
-  // Handle checking if the session is valid
-  const session = await getAuthSession();
+// TODO: Clean up the calls to fetch the tracks here
+export default function PlaylistEditorColumn({
+  playlistId,
+  ind,
+}: PlaylistEditorColumnProps) {
+  /** The session */
+  const [session, setSession] = useState<AuthSession | null>();
+
+  /** The tracks */
+  const [tracks, setTracks] = useState<Tracks>();
+
+  const draggableUnique: string = uuid();
+  const droppableUnique: string = uuid();
+
+  // Fetch the session and tracks
+  useEffect(() => {
+    const fetchSessionAndTracks = async () => {
+      const ses = await getSession();
+      setSession(ses as AuthSession);
+      if (ses) {
+        const fetchedTracks = await getTracks(ses as AuthSession, playlistId);
+        setTracks(fetchedTracks);
+      }
+    };
+
+    fetchSessionAndTracks();
+  }, [playlistId]);
+
   if (!session) {
     return null;
   }
 
-  const tracks = await getTracks(session, playlist.id);
-
   return (
-    <aside className='flex h-full w-96'>
+    <DraggableContainer
+      id={`${playlistId}-draggable-column_${draggableUnique}}`}
+      ind={ind}
+      className='flex h-full w-96 flex-col'
+    >
+      <PlaylistEditorColumnHeader />
       <DroppableContainer
-        id='droppable-origin'
+        id={`${playlistId}-droppable-column_${droppableUnique}`}
         className='h-full w-full cursor-pointer flex-col overflow-auto rounded-lg bg-cardBackground p-1 scrollbar-hide'
+        type='track'
       >
-        {tracks.items.map((track, ind) => {
-          return (
-            <DraggableContainer key={track.id} id={track.id} ind={ind}>
-              <div></div>
-            </DraggableContainer>
-          );
-        })}
+        <PlaylistEditorColumnTracks tracks={tracks} />
       </DroppableContainer>
-    </aside>
+    </DraggableContainer>
   );
 }

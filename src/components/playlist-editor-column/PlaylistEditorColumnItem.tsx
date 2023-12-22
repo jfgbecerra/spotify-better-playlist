@@ -1,6 +1,6 @@
 'use client';
 
-import { Playlist, Track } from '@/types/types';
+import { Track } from '@/types/types';
 import { Card, CardBody } from '@nextui-org/card';
 import { Image } from '@nextui-org/image';
 import NextImage from 'next/image';
@@ -49,13 +49,12 @@ export default function PlaylistEditorColumnItem({
             <div className='flex flex-col gap-0 overflow-hidden'>
               <Skeleton isLoaded={isLoaded} className='rounded-lg'>
                 <h3 className='truncate font-semibold text-foreground/90'>
-                  {track.album.name}
+                  {track.name}
                 </h3>
               </Skeleton>
               <Skeleton isLoaded={isLoaded} className='rounded-lg'>
                 <p className='text-small text-foreground/80'>
-                  {track.album.type} ·{' '}
-                  {track.album.artists.map((artist) => artist.name).join(', ')}
+                  {track.artists?.map((artist) => artist.name).join(', ')}
                 </p>
               </Skeleton>
             </div>
