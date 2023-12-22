@@ -67,7 +67,7 @@ export interface Playlists {
 
 export interface Tracks {
   href: string;
-  items: Track[];
+  items: TrackWrapper[];
   limit: number;
   next: string | null;
   offset: number;
@@ -135,4 +135,19 @@ export interface Track {
   track_number: number;
   type: string;
   uri: string;
+}
+
+export interface TrackWrapper {
+  added_at: string;
+  added_by: {
+    external_urls: {
+      spotify: string;
+    };
+    href: string;
+    id: string;
+    type: string;
+    uri: string;
+  };
+  is_local: boolean;
+  track: Track;
 }
