@@ -1,11 +1,7 @@
 'use client';
-
-import { getTracks } from '@/lib/playlist-data-accessor';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import DroppableContainer from '../DroppableContainer';
 import DraggableContainer from '../DraggableContainer';
-import { getSession } from 'next-auth/react';
-import { AuthSession, Tracks } from '@/types/types';
 import PlaylistEditorColumnTracks from './PlaylistEditorColumnTracks';
 import { v4 as uuid } from 'uuid';
 import PlaylistEditorColumnHeader from './PLaylistEditorColumnHeader';
@@ -26,8 +22,6 @@ export default function PlaylistEditorColumn({
 }: PlaylistEditorColumnProps) {
   /** The tracks */
   const playlistMap = usePlaylistStore((state) => state.playlistMap);
-
-  console.log('playlistMap', playlistMap);
 
   /** The UIDs for containers */
   const draggableUnique: string = uuid();
