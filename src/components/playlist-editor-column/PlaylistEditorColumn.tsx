@@ -9,6 +9,7 @@ import { AuthSession, Tracks } from '@/types/types';
 import PlaylistEditorColumnTracks from './PlaylistEditorColumnTracks';
 import { v4 as uuid } from 'uuid';
 import PlaylistEditorColumnHeader from './PLaylistEditorColumnHeader';
+import { usePlaylistStore } from '@/state/zustandState';
 
 type PlaylistEditorColumnProps = {
   /** The playlist id to render */
@@ -23,32 +24,14 @@ export default function PlaylistEditorColumn({
   playlistId,
   ind,
 }: PlaylistEditorColumnProps) {
-  /** The session */
-  const [session, setSession] = useState<AuthSession | null>();
-
   /** The tracks */
-  const [tracks, setTracks] = useState<Tracks>();
+  const playlistMap = usePlaylistStore((state) => state.playlistMap);
 
+  console.log('playlistMap', playlistMap);
+
+  /** The UIDs for containers */
   const draggableUnique: string = uuid();
   const droppableUnique: string = uuid();
-
-  // Fetch the session and tracks
-  useEffect(() => {
-    const fetchSessionAndTracks = async () => {
-      const ses = await getSession();
-      setSession(ses as AuthSession);
-      if (ses) {
-        const fetchedTracks = await getTracks(ses as AuthSession, playlistId);
-        setTracks(fetchedTracks);
-      }
-    };
-
-    fetchSessionAndTracks();
-  }, [playlistId]);
-
-  if (!session) {
-    return null;
-  }
 
   return (
     <DraggableContainer
@@ -62,7 +45,7 @@ export default function PlaylistEditorColumn({
         className='h-full w-full cursor-pointer flex-col overflow-auto rounded-lg bg-cardBackground p-1 scrollbar-hide'
         type='track'
       >
-        <PlaylistEditorColumnTracks tracks={tracks} />
+        <PlaylistEditorColumnTracks tracks={playlistMap.get(playlistId)} />
       </DroppableContainer>
     </DraggableContainer>
   );

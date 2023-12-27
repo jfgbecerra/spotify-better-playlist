@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useCallback } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { getSession } from 'next-auth/react';
 import { usePlaylistStore } from '@/state/zustandState';
@@ -19,12 +19,25 @@ export default function DraggableProvider({ children, skip = false }: Props) {
   // If we are skipping, then just return the children
   if (skip) return <>{children}</>;
 
+  /** The session */
+  const [session, setSession] = useState<AuthSession | null>();
+
+  // Fetch the session and tracks
+  useEffect(() => {
+    const fetchSession = async () => {
+      const ses = await getSession();
+      setSession(ses as AuthSession);
+    };
+    fetchSession();
+  }, []);
+
+  // Function to add a playlist id to the playlist editor pane
   const addPlaylistsIds = usePlaylistStore((state) => state.addPlaylistId);
 
   async function hanldeAddPlaylist(result: DropResult) {
-    if (!result.destination) return;
+    if (!result.destination || !session) return;
 
-    addPlaylistsIds(result.draggableId, result.destination.index);
+    addPlaylistsIds(result.draggableId, result.destination.index, session);
   }
 
   // Function to handle when a playlist if dragged on to editor content pane
