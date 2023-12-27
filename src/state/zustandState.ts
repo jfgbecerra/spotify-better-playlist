@@ -2,17 +2,19 @@ import { getTracks } from '@/lib/playlist-data-accessor';
 import { AuthSession, Tracks } from '@/types/types';
 import { create } from 'zustand';
 
-// TODO: Need to define data structure layout for this to not call the tracks for every playlist
-// Whenever a new onne is added, it calls the tracks for every playlist
-// Probably need to add more functions in here to handle making the calls and appending them through here!
+// TODO: Need to optimize rerenders of the editor pane. When adding a playlist all the playlists are no longer called
+// But it still refreshes all the rendered ui due to the global map getting a new object
 
-type PlaylistState = {
+type State = {
   /* Array of playlist IDs */
   playlistIds: string[];
 
   /* Map of playlist IDs to playlist objects */
   playlistMap: Map<string, Tracks>;
+}
 
+
+type Action = {
   /* Add a new playlist ID to the store at a specific index */
   addPlaylistId: (
     playlistId: string,
@@ -25,9 +27,10 @@ type PlaylistState = {
 };
 
 /* Zustand store for playlist editor panel */
-export const usePlaylistStore = create<PlaylistState>((set) => ({
+export const usePlaylistStore = create<State & Action>((set) => ({
   playlistIds: [],
   playlistMap: new Map(),
+
   addPlaylistId: async (playlistId, index, authSess) => {
     const playlistTracks = await getTracks(authSess, playlistId);
     set((state) => {
@@ -38,6 +41,7 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
       return { playlistIds: newPlaylistIds, playlistMap: newPlaylistMap };
     });
   },
+
   removePlaylistId: (playlistId) => {
     set((state) => {
       const newPlaylistIds = state.playlistIds.filter(
