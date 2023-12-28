@@ -8,11 +8,60 @@ export const customGet = async (url: string, session: AuthSession | null) => {
   if (!session) {
     return null;
   }
-  const res = await fetch(url, {
+  const options: RequestInit = {
+    method: 'GET',
     headers: {
       Authorization: `Bearer ${session.user.accessToken}`,
+      'Content-Type': 'application/json',
     },
-  }).then((res) => res.json());
+  };
+  const res = await fetch(url, options).then((res) => res.json());
+
+  return res;
+};
+
+export const customDelete = async (
+  url: string,
+  session: AuthSession | null,
+  data: any = null
+) => {
+  if (!session) {
+    return null;
+  }
+  const options: RequestInit = {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${session.user.accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  };
+  if (data) {
+    options.body = JSON.stringify(data);
+  }
+  const res = await fetch(url, options).then((res) => res.json());
+
+  return res;
+};
+
+export const customPost = async (
+  url: string,
+  session: AuthSession | null,
+  data: any = null
+) => {
+  if (!session) {
+    return null;
+  }
+  const options: RequestInit = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${session.user.accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  };
+  if (data) {
+    options.body = JSON.stringify(data);
+  }
+  const res = await fetch(url, options).then((res) => res.json());
 
   return res;
 };
