@@ -1,7 +1,7 @@
 'use server';
 
 import { AuthSession, Playlists, Tracks } from '@/types/types';
-import { customGet } from '@/utils/serverUtils';
+import { customDelete, customGet, customPost } from '@/utils/serverUtils';
 
 const BASEURL = 'https://api.spotify.com/';
 
@@ -54,5 +54,54 @@ export const getTracks = async (
   return customGet(
     `${BASEURL}v1/playlists/${playlist_id}/tracks`,
     session
+  ).then((resp) => resp);
+};
+
+/**
+ * Deletes multiple tracks from a specific playlist by their URIs.
+ *
+ * @param {AuthSession} session - The session object containing the user's authentication information.
+ * @param {string} playlist_id - The ID of the playlist to delete the tracks from.
+ * @param {string[]} track_uris - The Spotify URIs of the tracks to delete.
+ * @returns {Promise<Response>} - A Promise that resolves to the response of the delete request.
+ */
+export const deleteTracks = async (
+  session: AuthSession,
+  playlist_id: string,
+  track_uris: string[]
+): Promise<Response> => {
+  const body = {
+    tracks: track_uris.map((uri) => ({ uri })),
+  };
+  return customDelete(
+    `${BASEURL}v1/playlists/${playlist_id}/tracks`,
+    session,
+    body
+  ).then((resp) => resp);
+};
+
+/**
+ * Adds multiple tracks to a specific playlist by their URIs.
+ *
+ * @param {AuthSession} session - The session object containing the user's authentication information.
+ * @param {string} playlist_id - The ID of the playlist to add the tracks to.
+ * @param {number} position - The position for the track to be placed.
+ * @param {string[]} track_uris - The Spotify URIs of the tracks to add.
+ * @returns {Promise<Response>} - A Promise that resolves to the response of the add request.
+ */
+export const addTracks = async (
+  session: AuthSession,
+  playlist_id: string,
+  position: number,
+  track_uris: string[]
+): Promise<Response> => {
+  const body = {
+    uris: track_uris,
+    position: position,
+  };
+  return customPost(
+    `${BASEURL}v1/playlists/${playlist_id}/tracks`,
+    session,
+    body
   ).then((resp) => resp);
 };
