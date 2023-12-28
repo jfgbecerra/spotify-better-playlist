@@ -13,6 +13,8 @@ type PlaylistEditorColumnItemProps = {
   track: Track;
 };
 
+// TODO: Update the skeleton to be calculated for each item instead of only using the image
+
 export default function PlaylistEditorColumnItem({
   track,
 }: PlaylistEditorColumnItemProps) {

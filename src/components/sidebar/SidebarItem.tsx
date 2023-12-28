@@ -13,6 +13,8 @@ type SidebarItemProps = {
   playlist: Playlist;
 };
 
+// TODO: Update the skeleton to be calculated for each item instead of only using the image
+
 export default function SidebarItem({ playlist }: SidebarItemProps) {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
