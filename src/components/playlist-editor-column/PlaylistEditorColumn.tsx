@@ -1,11 +1,10 @@
 'use client';
-import React from 'react';
+import React, { memo } from 'react';
 import DroppableContainer from '../DroppableContainer';
 import DraggableContainer from '../DraggableContainer';
 import PlaylistEditorColumnTracks from './PlaylistEditorColumnTracks';
 import { v4 as uuid } from 'uuid';
 import PlaylistEditorColumnHeader from './PLaylistEditorColumnHeader';
-import { usePlaylistStore } from '@/state/zustandState';
 
 type PlaylistEditorColumnProps = {
   /** The playlist id to render */
@@ -16,16 +15,12 @@ type PlaylistEditorColumnProps = {
 };
 
 // TODO: Clean up the calls to fetch the tracks here
-export default function PlaylistEditorColumn({
+export default memo(function PlaylistEditorColumn({
   playlistId,
   ind,
 }: PlaylistEditorColumnProps) {
-  /** The tracks */
-  const playlistMap = usePlaylistStore((state) => state.playlistMap);
-
   /** The UIDs for containers */
   const draggableUnique: string = uuid();
-  const droppableUnique: string = uuid();
 
   return (
     <DraggableContainer
@@ -35,12 +30,12 @@ export default function PlaylistEditorColumn({
     >
       <PlaylistEditorColumnHeader />
       <DroppableContainer
-        id={`${playlistId}-droppable-column_${droppableUnique}`}
+        id={`${playlistId}_droppable-column`}
         className='h-full w-full cursor-pointer flex-col overflow-auto rounded-lg bg-cardBackground p-1 scrollbar-hide'
         type='track'
       >
-        <PlaylistEditorColumnTracks tracks={playlistMap.get(playlistId)} />
+        <PlaylistEditorColumnTracks playlistId={playlistId} />
       </DroppableContainer>
     </DraggableContainer>
   );
-}
+});
