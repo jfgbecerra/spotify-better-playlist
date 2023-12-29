@@ -6,6 +6,7 @@ interface AuthUser {
   picture?: string | null;
   image?: string | null;
   accessToken: string;
+  // refreshToken: string;
   sub: string;
   expires_at: number;
 }
