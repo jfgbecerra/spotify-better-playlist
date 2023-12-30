@@ -1,13 +1,22 @@
-import { getAuthSession } from '@/utils/serverUtils';
+'use client';
 
-export default async function ContentPane() {
-  // Handle checking if the session is valid
-  const session = await getAuthSession();
-  if (!session) {
-    return null;
-  }
+import DroppableContainer from '../DroppableContainer';
+import { usePlaylistStore } from '@/state/zustandState';
+import PlaylistEditorColumn from '../playlist-editor-column/PlaylistEditorColumn';
+
+export default function ContentPane() {
+  const playlistsTracks = usePlaylistStore((state) => state.playlistIds);
 
   return (
-    <div className='flex h-full w-full rounded-lg bg-cardBackground'></div>
+    <DroppableContainer
+      id='playlist-editor-pane'
+      className='flex h-full w-full flex-row rounded-lg bg-cardBackground'
+      direction='horizontal'
+      type='playlist'
+    >
+      {playlistsTracks.map((playlist, ind) => (
+        <PlaylistEditorColumn key={ind} playlistId={playlist} ind={ind} />
+      ))}
+    </DroppableContainer>
   );
 }

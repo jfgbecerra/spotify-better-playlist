@@ -30,9 +30,7 @@ export default async function RootLayout({
   return (
     <html lang='en' className={theme} style={{ colorScheme: theme }}>
       <body className={inter.className}>
-        <Providers session={session}>
-          {children}
-        </Providers>
+        <Providers session={session}>{children}</Providers>
       </body>
     </html>
   );

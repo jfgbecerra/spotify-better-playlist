@@ -1,6 +1,6 @@
 'use client';
 
-import { Playlist } from '@/types/types';
+import { Track } from '@/types/types';
 import { Card, CardBody } from '@nextui-org/card';
 import { Image } from '@nextui-org/image';
 import NextImage from 'next/image';
@@ -8,14 +8,16 @@ import playlistIcon from '@/assets/music.svg';
 import { Skeleton } from '@nextui-org/react';
 import { useState } from 'react';
 
-type SidebarItemProps = {
+type PlaylistEditorColumnItemProps = {
   /** The playlist to render */
-  playlist: Playlist;
+  track: Track;
 };
 
 // TODO: Update the skeleton to be calculated for each item instead of only using the image
 
-export default function SidebarItem({ playlist }: SidebarItemProps) {
+export default function PlaylistEditorColumnItem({
+  track,
+}: PlaylistEditorColumnItemProps) {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   return (
@@ -23,13 +25,13 @@ export default function SidebarItem({ playlist }: SidebarItemProps) {
       <CardBody className='p-2'>
         <div className='flex h-full flex-row gap-2'>
           <div>
-            {playlist?.images?.[0] ? (
+            {track?.album?.images?.[0] ? (
               <Skeleton isLoaded={isLoaded} className='rounded-small'>
                 <div className='flex h-[48px] w-[48px] items-center justify-center rounded-small bg-neutral-500'>
                   <Image
                     alt='Album cover'
                     className='rounded-small object-cover'
-                    src={playlist?.images?.[0]?.url}
+                    src={track?.album?.images?.[0]?.url}
                     onLoad={() => setIsLoaded(true)}
                   />
                 </div>
@@ -49,12 +51,12 @@ export default function SidebarItem({ playlist }: SidebarItemProps) {
             <div className='flex flex-col gap-0 overflow-hidden'>
               <Skeleton isLoaded={isLoaded} className='rounded-lg'>
                 <h3 className='truncate font-semibold text-foreground/90'>
-                  {playlist.name}
+                  {track.name}
                 </h3>
               </Skeleton>
               <Skeleton isLoaded={isLoaded} className='rounded-lg'>
                 <p className='text-small text-foreground/80'>
-                  {playlist.type} · {playlist.owner.display_name}
+                  {track.artists?.map((artist) => artist.name).join(', ')}
                 </p>
               </Skeleton>
             </div>
