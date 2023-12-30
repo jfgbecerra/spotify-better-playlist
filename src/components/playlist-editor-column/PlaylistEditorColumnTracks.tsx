@@ -2,18 +2,22 @@
 
 import React from 'react';
 import DraggableContainer from '../DraggableContainer';
-import { Tracks } from '@/types/types';
 import PlaylistEditorColumnItem from './PlaylistEditorColumnItem';
 import { v4 as uuid } from 'uuid';
+import { usePlaylistStore } from '@/state/zustandState';
 
 type PlaylistEditorColumnTracksProps = {
-  /** The tracks to render */
-  tracks?: Tracks;
+  /** The playlist id to render */
+  playlistId: string;
 };
 
 export default function PlaylistEditorColumnTracks({
-  tracks,
+  playlistId,
 }: PlaylistEditorColumnTracksProps) {
+  /** The tracks */
+  const playlistMap = usePlaylistStore((state) => state.playlistMap);
+  const tracks = playlistMap.get(playlistId);
+
   return (
     <>
       {tracks?.items.map((track, ind) => {
