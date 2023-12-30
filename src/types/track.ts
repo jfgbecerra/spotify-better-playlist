@@ -33,7 +33,6 @@ export interface Track {
       width: number;
     }[];
     name: string;
-    release_date: string;
     release_date_precision: string;
     total_tracks: number;
     type: string;
@@ -49,8 +48,6 @@ export interface Track {
     type: string;
     uri: string;
   }[];
-  available_markets: string[];
-  disc_number: number;
   duration_ms: number;
   explicit: boolean;
   external_ids: {
@@ -63,7 +60,6 @@ export interface Track {
   id: string;
   is_local: boolean;
   name: string;
-  popularity: number;
   preview_url: string;
   track_number: number;
   type: string;
