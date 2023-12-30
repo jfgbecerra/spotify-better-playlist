@@ -1,6 +1,6 @@
 'use client';
 
-import { Playlist } from '@/types/types';
+import { Playlist } from '@/types/playlist';
 import { Card, CardBody } from '@nextui-org/card';
 import { Image } from '@nextui-org/image';
 import NextImage from 'next/image';
@@ -54,7 +54,7 @@ export default function SidebarItem({ playlist }: SidebarItemProps) {
               </Skeleton>
               <Skeleton isLoaded={isLoaded} className='rounded-lg'>
                 <p className='text-small text-foreground/80'>
-                  {playlist.type} · {playlist.owner.display_name}
+                  {playlist.owner.display_name}
                 </p>
               </Skeleton>
             </div>

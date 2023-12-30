@@ -1,7 +1,7 @@
 import { getAuthSession } from '@/utils/serverUtils';
 import LoginButton from './buttons/LoginButton';
 import LogoutButton from './buttons/LogoutButton';
-import { AuthSession } from '@/types/types';
+import { AuthSession } from '@/types/auth';
 import {
   Navbar,
   NavbarContent,

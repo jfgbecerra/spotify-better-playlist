@@ -4,7 +4,7 @@ import { ReactNode, useCallback } from 'react';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { getSession } from 'next-auth/react';
 import { usePlaylistStore } from '@/state/zustandState';
-import { AuthSession } from '@/types/types';
+import { AuthSession } from '@/types/auth';
 import { useDisclosure } from '@nextui-org/modal';
 import AddDuplicateModal from '@/components/AddDuplicateModal';
 
