@@ -1,6 +1,6 @@
 'use server';
 
-import { AuthSession, Playlists, Tracks } from '@/types/types';
+import { AuthSession, Playlists, Tracks } from '@/types';
 import { customDelete, customGet, customPost } from '@/utils/serverUtils';
 
 const BASEURL = 'https://api.spotify.com/';

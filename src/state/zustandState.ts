@@ -3,7 +3,7 @@ import {
   deleteTracks,
   getTracks,
 } from '@/lib/playlist-data-accessor';
-import { AuthSession, Tracks } from '@/types/types';
+import { AuthSession, Tracks } from '@/types';
 import { create } from 'zustand';
 
 // TODO: Need to optimize rerenders of the editor pane. When adding a playlist all the playlists are no longer called

@@ -1,6 +1,6 @@
 'use client';
 
-import { AuthSession } from '@/types/types';
+import { AuthSession } from '@/types/auth';
 import NextAuthProvider from './NextAuthProvider';
 import UIProvider from './UIProvider';
 import UIThemeProvider from './UIThemeProvider';

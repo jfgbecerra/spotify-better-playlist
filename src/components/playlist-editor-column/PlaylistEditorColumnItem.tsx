@@ -1,6 +1,6 @@
 'use client';
 
-import { Track } from '@/types/types';
+import { Track } from '@/types/track';
 import { Card, CardBody } from '@nextui-org/card';
 import { Image } from '@nextui-org/image';
 import NextImage from 'next/image';
