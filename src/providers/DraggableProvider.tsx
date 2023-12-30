@@ -52,6 +52,9 @@ export default function DraggableProvider({ children, skip = false }: Props) {
     const auth = (await getSession()) as AuthSession;
     if (!result.destination) return;
 
+    // If the track was left in the same spoto
+    if (srcId === destId && sourceInd === destInd) return;
+
     moveTrack(
       srcId.split('_')[0],
       destId.split('_')[0],
@@ -91,7 +94,6 @@ export default function DraggableProvider({ children, skip = false }: Props) {
     }
     // Handle moving a song
     else if (result.type === 'track') {
-      console.log(result);
       handleMovingTrack(result, sourceId, destId, sourceInd, destInd);
     }
   }, []);
