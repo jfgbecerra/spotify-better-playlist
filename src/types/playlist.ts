@@ -1,29 +1,12 @@
+import { Image, Person } from './general';
 export interface Playlist {
   description: string | null;
-  external_urls: {
-    spotify: string;
-  };
   href: string;
   id: string;
-  images?: [
-    {
-      url: string;
-      height: number | null;
-      width: number | null;
-    },
-  ];
+  images?: Image[];
   name: string;
-  owner: {
-    href: string;
-    id: string;
-    uri: string;
-    display_name: string;
-  };
+  owner: Person;
   snapshot_id: string;
-  tracks: {
-    href: string;
-    total: number;
-  };
   uri: string;
 }
 
