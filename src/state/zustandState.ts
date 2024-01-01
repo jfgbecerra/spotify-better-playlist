@@ -31,9 +31,6 @@ type Action = {
   /* Move a playlist ID from one index to another in the store */
   movePlaylistId: (prevIndex: number, newIndex: number) => void;
 
-  /* Gets the tracks for a playlist */
-  getPlaylistTracks: (playlistId: string) => Tracks | undefined;
-
   /* Check if a specific ID exists in the playlistIds array */
   idExists: (id: string) => boolean;
 
@@ -82,10 +79,6 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
       newPlaylistIds.splice(newIndex, 0, playlistId);
       return { playlistIds: newPlaylistIds };
     });
-  },
-
-  getPlaylistTracks: (playlistId: string) => {
-    return get().playlistMap.get(playlistId);
   },
 
   idExists: (id: string) => {
