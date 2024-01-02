@@ -23,7 +23,11 @@ export default async function Sidebar() {
       >
         {playlists.items.map((playlist, ind) => {
           return (
-            <DraggableContainer key={playlist.id} id={playlist.id} ind={ind}>
+            <DraggableContainer
+              key={playlist.id}
+              id={`${playlist.id}_${playlist.snapshot_id}`}
+              ind={ind}
+            >
               <SidebarItem playlist={playlist} />
             </DraggableContainer>
           );
