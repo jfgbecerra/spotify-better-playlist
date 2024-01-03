@@ -19,3 +19,7 @@ export interface Playlists {
   total: number;
   items: Playlist[];
 }
+
+export interface PlaylistEditResponse {
+  snapshot_id: string;
+}

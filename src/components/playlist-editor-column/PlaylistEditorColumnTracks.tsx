@@ -15,12 +15,11 @@ export default function PlaylistEditorColumnTracks({
   playlistId,
 }: PlaylistEditorColumnTracksProps) {
   /** The tracks */
-  const playlistMap = usePlaylistStore((state) => state.playlistMap);
-  const tracks = playlistMap.get(playlistId);
+  const tracks = usePlaylistStore((state) => state.playlistMap.get(playlistId));
 
   return (
     <>
-      {tracks?.items.map((track, ind) => {
+      {tracks?.tracks.items.map((track, ind) => {
         const randomId: string = uuid();
 
         return (

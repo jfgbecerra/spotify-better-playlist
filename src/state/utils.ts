@@ -1,9 +1,9 @@
-function getPlaylistId(idAndSnapshot: string): string {
+export function getPlaylistId(idAndSnapshot: string): string {
   const parts = idAndSnapshot.split('_');
   return parts[0];
 }
 
-function getPlaylistSnapshot(idAndSnapshot: string): string {
+export function getPlaylistSnapshot(idAndSnapshot: string): string {
   const parts = idAndSnapshot.split('_');
-  return parts[-1];
+  return parts[parts.length - 1];
 }

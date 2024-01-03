@@ -1,6 +1,6 @@
 'use server';
 
-import { AuthSession, Playlists, Tracks } from '@/types';
+import { AuthSession, PlaylistEditResponse, Playlists, Tracks } from '@/types';
 import { customDelete, customGet, customPost } from '@/utils/serverUtils';
 
 const BASEURL = 'https://api.spotify.com/';
@@ -68,11 +68,14 @@ export const getTracks = async (
 export const deleteTracks = async (
   session: AuthSession,
   playlist_id: string,
-  track_uris: string[]
-): Promise<Response> => {
+  track_uris: string[],
+  snapshot: string
+): Promise<PlaylistEditResponse> => {
   const body = {
     tracks: track_uris.map((uri) => ({ uri })),
+    snapshot_id: snapshot,
   };
+
   return customDelete(
     `${BASEURL}v1/playlists/${playlist_id}/tracks`,
     session,
@@ -94,7 +97,7 @@ export const addTracks = async (
   playlist_id: string,
   position: number,
   track_uris: string[]
-): Promise<Response> => {
+): Promise<PlaylistEditResponse> => {
   const body = {
     uris: track_uris,
     position: position,

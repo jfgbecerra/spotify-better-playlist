@@ -3,12 +3,14 @@ import {
   deleteTracks,
   getTracks,
 } from '@/lib/playlist-data-accessor';
-import { AuthSession, StateTracks, Tracks } from '@/types';
+import { AuthSession, StateTracks } from '@/types';
 import { create } from 'zustand';
+import { getPlaylistId, getPlaylistSnapshot } from './utils';
 
-// TODO: Need to optimize rerenders of the editor pane. When adding a playlist all the playlists are no longer called
-// But it still refreshes all the rendered ui due to the global map getting a new object
-
+// TODO: Try adding a snapshot map and add an async function to call for updating the ui that finishes and saves the new snapshot when the async calls finish
+// Then Just update the playlistMap assuming the async calls succeed
+// If they fail, revert the playlistMap to the previous snapshot somehow??? Or prompt the user that the playlists are out of sync and they need to refresh the page
+// We would change the string value in state tracks to be a counter that just increments that way the ui rerenders just fine still
 type State = {
   /* Array of playlist IDs */
   playlistIds: string[];
@@ -113,10 +115,12 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
       return;
     }
 
-    // TODO: Need to parse out the response from here and update the playlist snapshot for the source and target
-    const delSnapshot = await deleteTracks(authSess, sourcePlaylistId, [
-      trackToMove.track.uri,
-    ]);
+    const delSnapshot = await deleteTracks(
+      authSess,
+      sourcePlaylistId,
+      [trackToMove.track.uri],
+      sourcePlaylist.snapshotId
+    );
     const addSnapshot = await addTracks(authSess, targetPlaylistId, newIndex, [
       trackToMove.track.uri,
     ]);
@@ -128,12 +132,22 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
         sourcePlaylist?.tracks.items[prevIndex]
       ) {
         // Remove track from source playlist
-        sourcePlaylist.tracks.items.splice(prevIndex, 1);
-        newPlaylistMap.set(sourceId, sourcePlaylist);
+        if (delSnapshot?.snapshot_id) {
+          sourcePlaylist.tracks.items.splice(prevIndex, 1);
+          newPlaylistMap.set(sourceId, {
+            snapshotId: delSnapshot.snapshot_id,
+            tracks: sourcePlaylist.tracks,
+          } as StateTracks);
+        }
 
         // Add track to target playlist at the new index
-        targetPlaylist.tracks.items.splice(newIndex, 0, trackToMove);
-        newPlaylistMap.set(targetId, targetPlaylist);
+        if (addSnapshot?.snapshot_id) {
+          targetPlaylist.tracks.items.splice(newIndex, 0, trackToMove);
+          newPlaylistMap.set(targetId, {
+            snapshotId: addSnapshot.snapshot_id,
+            tracks: targetPlaylist.tracks,
+          } as StateTracks);
+        }
       }
 
       return { playlistMap: newPlaylistMap };
