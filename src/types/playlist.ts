@@ -20,6 +20,6 @@ export interface Playlists {
   items: Playlist[];
 }
 
-export interface PlaylistEditResponse {
+export interface PlaylistEditResponse extends Response {
   snapshot_id: string;
 }
