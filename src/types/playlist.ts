@@ -8,6 +8,7 @@ export interface Playlist {
   owner: Person;
   snapshot_id: string;
   uri: string;
+  public: boolean;
 }
 
 export interface Playlists {
@@ -18,4 +19,8 @@ export interface Playlists {
   previous: string | null;
   total: number;
   items: Playlist[];
+}
+
+export interface PlaylistEditResponse extends Response {
+  snapshot_id: string;
 }

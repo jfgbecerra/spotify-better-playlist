@@ -11,25 +11,34 @@ type PlaylistEditorColumnTracksProps = {
   playlistId: string;
 };
 
+//TODO: Add paging system to load more tracks and make the list virtualized
 export default function PlaylistEditorColumnTracks({
   playlistId,
 }: PlaylistEditorColumnTracksProps) {
   /** The tracks */
-  const playlistMap = usePlaylistStore((state) => state.playlistMap);
-  const tracks = playlistMap.get(playlistId);
+  const tracks = usePlaylistStore((state) => state.playlistMap.get(playlistId));
 
   return (
     <>
-      {tracks?.items.map((track, ind) => {
+      {tracks?.tracks.items.map((trackWrapper, ind) => {
         const randomId: string = uuid();
+        const trackName = trackWrapper.track.name;
+        const artistNames = trackWrapper.track.artists
+          ?.map((artist) => artist.name)
+          .join(', ');
+        const albumImageUrl = trackWrapper.track.album.images[0].url;
 
         return (
           <DraggableContainer
-            key={`${track.track.id}_${randomId}`}
-            id={`${track.track.id}_${randomId}`}
+            key={`${trackWrapper.track.id}_${randomId}`}
+            id={`${trackWrapper.track.id}_${randomId}`}
             ind={ind}
           >
-            <PlaylistEditorColumnItem track={track.track} />
+            <PlaylistEditorColumnItem
+              trackName={trackName}
+              artistNames={artistNames}
+              albumImageUrl={albumImageUrl}
+            />
           </DraggableContainer>
         );
       })}

@@ -53,3 +53,8 @@ export interface Tracks {
   previous: string | null;
   total: number;
 }
+
+export interface StateTracks {
+  snapshotId: string;
+  tracks: Tracks;
+}

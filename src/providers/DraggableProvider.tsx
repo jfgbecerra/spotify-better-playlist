@@ -2,7 +2,7 @@
 
 import { ReactNode, useCallback } from 'react';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
-import { getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { usePlaylistStore } from '@/state/zustandState';
 import { AuthSession } from '@/types/auth';
 import { useDisclosure } from '@nextui-org/modal';
@@ -15,6 +15,8 @@ type Props = {
 };
 
 export default function DraggableProvider({ children, skip = false }: Props) {
+  const { data: session } = useSession();
+
   // If we are skipping, then just return the children
   if (skip) return <>{children}</>;
 
@@ -31,25 +33,23 @@ export default function DraggableProvider({ children, skip = false }: Props) {
    * Function to append a playlist to pane editor
    * @param result The result from the drag and drop action
    */
-  async function hanldeAddPlaylist(result: DropResult, desInd: number) {
-    const auth = (await getSession()) as AuthSession;
+  function hanldeAddPlaylist(result: DropResult, desInd: number) {
     if (!result.destination) return;
 
-    addPlaylistsIds(result.draggableId, desInd, auth);
+    addPlaylistsIds(result.draggableId, desInd, session as AuthSession);
   }
 
   /**
    * Function to append a playlist to pane editor
    * @param result The result from the drag and drop action
    */
-  async function handleMovingTrack(
+  function handleMovingTrack(
     result: DropResult,
     srcId: string,
     destId: string,
     sourceInd: number,
     destInd: number
   ) {
-    const auth = (await getSession()) as AuthSession;
     if (!result.destination) return;
 
     // If the track was left in the same spoto
@@ -60,7 +60,7 @@ export default function DraggableProvider({ children, skip = false }: Props) {
       destId.split('_')[0],
       sourceInd,
       destInd,
-      auth
+      session as AuthSession
     );
   }
 

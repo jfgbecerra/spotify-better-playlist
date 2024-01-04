@@ -14,7 +14,6 @@ type PlaylistEditorColumnProps = {
   ind: number;
 };
 
-// TODO: Clean up the calls to fetch the tracks here
 export default memo(function PlaylistEditorColumn({
   playlistId,
   ind,
@@ -28,7 +27,7 @@ export default memo(function PlaylistEditorColumn({
       ind={ind}
       className='flex h-full w-96 flex-col'
     >
-      <PlaylistEditorColumnHeader />
+      <PlaylistEditorColumnHeader playlistId={playlistId} />
       <DroppableContainer
         id={`${playlistId}_droppable-column`}
         className='h-full w-full cursor-pointer flex-col overflow-auto rounded-lg bg-cardBackground p-1 scrollbar-hide'

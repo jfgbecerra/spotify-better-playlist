@@ -3,38 +3,38 @@ import {
   deleteTracks,
   getTracks,
 } from '@/lib/playlist-data-accessor';
-import { AuthSession, Tracks } from '@/types';
+import { AuthSession, StateTracks } from '@/types';
 import { create } from 'zustand';
+import { getPlaylistId, getPlaylistSnapshot } from './utils';
 
-// TODO: Need to optimize rerenders of the editor pane. When adding a playlist all the playlists are no longer called
-// But it still refreshes all the rendered ui due to the global map getting a new object
-
+// TODO: Need to do some major cleanup / refactor here. This is a mess.
+// Current logic allows decent speed for moving tracks back and forth but will need to look at moving multiple tracks at once.
 type State = {
   /* Array of playlist IDs */
   playlistIds: string[];
 
+  /* Array of snapshot IDs */
+  snapshotMap: Map<string, string>;
+
   /* Map of playlist IDs to playlist objects */
-  playlistMap: Map<string, Tracks>;
+  playlistMap: Map<string, StateTracks>;
 };
 
 type Action = {
   /* Add a new playlist ID to the store at a specific index */
   addPlaylistId: (
-    playlistId: string,
+    playlistIdAndSnapshot: string,
     index: number,
     authSess: AuthSession
   ) => void;
 
   /* Remove a playlist ID from the store */
-  removePlaylistId: (playlistId: string) => void;
+  removePlaylistId: (playlistIdAndSnapshot: string) => void;
 
-  /* Move a playlist ID from one index to another in the store */
+  /* Move a playlist ID and snapshot from one index to another in the store */
   movePlaylistId: (prevIndex: number, newIndex: number) => void;
 
-  /* Gets the tracks for a playlist */
-  getPlaylistTracks: (playlistId: string) => Tracks | undefined;
-
-  /* Check if a specific ID exists in the playlistIds array */
+  /* Check if a specific ID snapshot exists in the array */
   idExists: (id: string) => boolean;
 
   /* Move track between maps */
@@ -51,25 +51,42 @@ type Action = {
 export const usePlaylistStore = create<State & Action>((set, get) => ({
   playlistIds: [],
   playlistMap: new Map(),
+  snapshotMap: new Map(),
 
-  addPlaylistId: async (playlistId, index, authSess) => {
+  addPlaylistId: async (playlistIdAndSnapshot, index, authSess) => {
+    const playlistId = getPlaylistId(playlistIdAndSnapshot);
+    const playlistSnapshot = getPlaylistSnapshot(playlistIdAndSnapshot);
+
     const playlistTracks = await getTracks(authSess, playlistId);
     set((state) => {
       const newPlaylistIds = [...state.playlistIds];
       newPlaylistIds.splice(index, 0, playlistId);
       const newPlaylistMap = new Map(state.playlistMap);
-      newPlaylistMap.set(playlistId, playlistTracks);
-      return { playlistIds: newPlaylistIds, playlistMap: newPlaylistMap };
+      const newSnapshotMap = new Map(state.snapshotMap);
+      newPlaylistMap.set(playlistId, {
+        snapshotId: playlistSnapshot,
+        tracks: playlistTracks,
+      } as StateTracks);
+      newSnapshotMap.set(playlistId, playlistSnapshot);
+      return {
+        playlistIds: newPlaylistIds,
+        playlistMap: newPlaylistMap,
+        snapshotMap: newSnapshotMap,
+      };
     });
   },
 
-  removePlaylistId: (playlistId) => {
+  removePlaylistId: (playlistIdAndSnapshot) => {
+    const playlistId = getPlaylistId(playlistIdAndSnapshot);
+
     set((state) => {
       const newPlaylistIds = state.playlistIds.filter(
         (id) => id !== playlistId
       );
       const newPlaylistMap = new Map(state.playlistMap);
+      const newSnapshotMap = new Map(state.snapshotMap);
       newPlaylistMap.delete(playlistId);
+      newSnapshotMap.delete(playlistId);
       return { playlistIds: newPlaylistIds, playlistMap: newPlaylistMap };
     });
   },
@@ -84,48 +101,104 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
     });
   },
 
-  getPlaylistTracks: (playlistId: string) => {
-    return get().playlistMap.get(playlistId);
-  },
-
   idExists: (id: string) => {
-    return get().playlistIds.includes(id);
+    const playlistId = getPlaylistId(id);
+    return get().playlistIds.includes(playlistId);
   },
 
-  moveTrack: (
+  moveTrack: async (
     sourcePlaylistId: string,
     targetPlaylistId: string,
     prevIndex: number,
     newIndex: number,
     authSess: AuthSession
   ) => {
-    set((state) => {
-      const newPlaylistMap = new Map(state.playlistMap);
-      const sourcePlaylist = newPlaylistMap.get(sourcePlaylistId);
-      const targetPlaylist = newPlaylistMap.get(targetPlaylistId);
+    const sourceId = getPlaylistId(sourcePlaylistId);
+    const targetId = getPlaylistId(targetPlaylistId);
 
+    const newPlaylistMap = new Map(get().playlistMap);
+    const newSnapshotMap = new Map(get().snapshotMap);
+    const sourcePlaylist = newPlaylistMap.get(sourceId);
+    const targetPlaylist = newPlaylistMap.get(targetId);
+    const sourcePlaylistSnap = newSnapshotMap.get(sourceId);
+    const targetPlaylistSnap = newSnapshotMap.get(targetId);
+    const trackToMove = sourcePlaylist?.tracks.items[prevIndex];
+
+    if (!trackToMove) {
+      return;
+    }
+
+    if (!sourcePlaylistSnap || !targetPlaylistSnap) {
+      return;
+    }
+
+    set(() => {
+      // If a valid change occurred, update the playlist map
       if (
         sourcePlaylist &&
         targetPlaylist &&
-        sourcePlaylist?.items[prevIndex]
+        sourcePlaylist?.tracks.items[prevIndex]
       ) {
-        const trackToMove = sourcePlaylist?.items[prevIndex];
-
         // Remove track from source playlist
-        sourcePlaylist?.items.splice(prevIndex, 1);
-        newPlaylistMap.set(sourcePlaylistId, sourcePlaylist);
-        // TODO: If every added this call will need to be changed for moving mulitple tracks
-        deleteTracks(authSess, sourcePlaylistId, [trackToMove.track.uri]);
+        sourcePlaylist.tracks.items.splice(prevIndex, 1);
+        newPlaylistMap.set(sourceId, {
+          snapshotId: sourcePlaylistSnap,
+          tracks: sourcePlaylist.tracks,
+        } as StateTracks);
 
         // Add track to target playlist at the new index
-        targetPlaylist?.items.splice(newIndex, 0, trackToMove);
-        newPlaylistMap.set(targetPlaylistId, targetPlaylist);
-        addTracks(authSess, targetPlaylistId, newIndex, [
-          trackToMove.track.uri,
-        ]);
+        targetPlaylist.tracks.items.splice(newIndex, 0, trackToMove);
+        newPlaylistMap.set(targetId, {
+          snapshotId: targetPlaylistSnap,
+          tracks: targetPlaylist.tracks,
+        } as StateTracks);
       }
-
       return { playlistMap: newPlaylistMap };
     });
+
+    // Make rest calls to update the playlist on the server
+    const delSnapshot = await deleteTracks(
+      authSess,
+      sourcePlaylistId,
+      [trackToMove.track.uri],
+      sourcePlaylistSnap
+    );
+    const addSnapshot = await addTracks(authSess, targetPlaylistId, newIndex, [
+      trackToMove.track.uri,
+    ]);
+
+    // If both requests succeeded, update the snapshot map
+    if (delSnapshot?.snapshot_id && addSnapshot?.snapshot_id) {
+      set(() => {
+        newSnapshotMap.set(sourceId, delSnapshot.snapshot_id);
+        newSnapshotMap.set(targetId, addSnapshot.snapshot_id);
+        return { snapshotMap: newSnapshotMap };
+      });
+    } else {
+      // If any of the requests failed, revert the change
+      set(() => {
+        const newRevertPlaylistMap = new Map(get().playlistMap);
+        if (
+          sourcePlaylist &&
+          targetPlaylist &&
+          sourcePlaylist?.tracks.items[prevIndex]
+        ) {
+          if (!delSnapshot?.snapshot_id) {
+            targetPlaylist.tracks.items.splice(newIndex, 0, trackToMove);
+            newRevertPlaylistMap.set(targetId, {
+              snapshotId: targetPlaylist.snapshotId,
+              tracks: targetPlaylist.tracks,
+            } as StateTracks);
+          } else if (!addSnapshot?.snapshot_id) {
+            sourcePlaylist.tracks.items.splice(prevIndex, 1);
+            newRevertPlaylistMap.set(sourceId, {
+              snapshotId: sourcePlaylist.snapshotId,
+              tracks: sourcePlaylist.tracks,
+            } as StateTracks);
+          }
+        }
+        return { playlistMap: newRevertPlaylistMap };
+      });
+    }
   },
 }));
