@@ -1,6 +1,12 @@
 'use server';
 
-import { AuthSession, PlaylistEditResponse, Playlists, Tracks } from '@/types';
+import {
+  AuthSession,
+  PlaylistEditResponse,
+  Playlists,
+  Tracks,
+  Playlist,
+} from '@/types';
 import { customDelete, customGet, customPost } from '@/utils/serverUtils';
 
 const BASEURL = 'https://api.spotify.com/';
@@ -13,13 +19,13 @@ const BASEURL = 'https://api.spotify.com/';
  * @param {number} [offset=0] - The index of the first playlist to return. Default is 0.
  * @returns {Promise<Playlists>} - A Promise that resolves to an object containing the user's playlists.
  */
-export const getUserPlaylists = async (
+export const getSidebarUserPlaylists = async (
   session: AuthSession,
   limit = 20,
   offset = 0
 ): Promise<Playlists> => {
   return customGet(
-    `${BASEURL}v1/me/playlists?limit=${limit}&offset=${offset}`,
+    `${BASEURL}v1/me/playlists?limit=${limit}&offset=${offset}&fields=items(name,id,images,owner(display_name,id),snapshot_id)`,
     session
   ).then((resp) => resp);
 };
@@ -29,15 +35,16 @@ export const getUserPlaylists = async (
  *
  * @param {AuthSession} session - The session object containing the user's authentication information.
  * @param {string} playlist_id - The ID of the playlist to fetch.
- * @returns {Promise<Playlists>} - A Promise that resolves to an object containing the requested playlist.
+ * @returns {Promise<Playlist>} - A Promise that resolves to an object containing the requested playlist.
  */
-export const getPlaylist = async (
+export const getPlaylistInfo = async (
   session: AuthSession,
   playlist_id: string
-): Promise<Playlists> => {
-  return customGet(`${BASEURL}v1/playlists/${playlist_id}`, session).then(
-    (resp) => resp
-  );
+): Promise<Playlist> => {
+  return customGet(
+    `${BASEURL}v1/playlists/${playlist_id}?fields=name,public,images,type,description,followers,owner(display_name,id)`,
+    session
+  ).then((resp) => resp);
 };
 
 /**
@@ -63,7 +70,8 @@ export const getTracks = async (
  * @param {AuthSession} session - The session object containing the user's authentication information.
  * @param {string} playlist_id - The ID of the playlist to delete the tracks from.
  * @param {string[]} track_uris - The Spotify URIs of the tracks to delete.
- * @returns {Promise<Response>} - A Promise that resolves to the response of the delete request.
+ * @param {string} snapshot - The snapshot ID of the playlist.
+ * @returns {Promise<PlaylistEditResponse>} - A Promise that resolves to the response of the delete request.
  */
 export const deleteTracks = async (
   session: AuthSession,
@@ -90,7 +98,7 @@ export const deleteTracks = async (
  * @param {string} playlist_id - The ID of the playlist to add the tracks to.
  * @param {number} position - The position for the track to be placed.
  * @param {string[]} track_uris - The Spotify URIs of the tracks to add.
- * @returns {Promise<Response>} - A Promise that resolves to the response of the add request.
+ * @returns {Promise<PlaylistEditResponse>} - A Promise that resolves to the response of the add request.
  */
 export const addTracks = async (
   session: AuthSession,

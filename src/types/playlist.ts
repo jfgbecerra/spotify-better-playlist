@@ -8,6 +8,7 @@ export interface Playlist {
   owner: Person;
   snapshot_id: string;
   uri: string;
+  public: boolean;
 }
 
 export interface Playlists {

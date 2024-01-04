@@ -1,4 +1,4 @@
-import { getUserPlaylists } from '@/lib/playlist-data-accessor';
+import { getSidebarUserPlaylists } from '@/lib/playlist-data-accessor';
 import { getAuthSession } from '@/utils/serverUtils';
 import SidebarItem from './SidebarItem';
 import DroppableContainer from '../DroppableContainer';
@@ -11,8 +11,9 @@ export default async function Sidebar() {
     return null;
   }
 
-  const playlists = await getUserPlaylists(session, 50);
+  const playlists = await getSidebarUserPlaylists(session, 50);
 
+  // TODO: Add a paging system to load more playlists
   return (
     <aside className='flex h-full w-96'>
       <DroppableContainer
