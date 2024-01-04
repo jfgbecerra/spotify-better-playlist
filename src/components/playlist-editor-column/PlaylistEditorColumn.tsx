@@ -14,7 +14,6 @@ type PlaylistEditorColumnProps = {
   ind: number;
 };
 
-// TODO: Clean up the calls to fetch the tracks here
 export default memo(function PlaylistEditorColumn({
   playlistId,
   ind,
