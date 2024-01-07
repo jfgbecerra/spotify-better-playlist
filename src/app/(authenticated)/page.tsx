@@ -1,5 +1,6 @@
 import NavigationBar from '@/components/NavigationBar';
 import ContentPane from '@/components/content-pane/ContentPane';
+import Player from '@/components/player/Player';
 import Sidebar from '@/components/sidebar/Sidebar';
 
 export default function Home() {
@@ -10,7 +11,7 @@ export default function Home() {
         <Sidebar />
         <ContentPane />
       </div>
-      <p className='h-28'>Testing</p>
+      <Player />
     </div>
   );
 }
