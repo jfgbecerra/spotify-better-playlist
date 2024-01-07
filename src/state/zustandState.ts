@@ -3,7 +3,7 @@ import {
   deleteTracks,
   getTracks,
 } from '@/lib/playlist-data-accessor';
-import { AuthSession, StateTracks } from '@/types';
+import { AuthSession, StateTracks, Track } from '@/types';
 import { create } from 'zustand';
 import { getPlaylistId, getPlaylistSnapshot } from './utils';
 
@@ -18,6 +18,9 @@ type State = {
 
   /* Map of playlist IDs to playlist objects */
   playlistMap: Map<string, StateTracks>;
+
+  /* Current track being played */
+  currentTrack: Track | null;
 };
 
 type Action = {
@@ -45,6 +48,8 @@ type Action = {
     newIndex: number,
     authSess: AuthSession
   ) => void;
+
+  setCurrentTrack: (track: Track) => void;
 };
 
 /* Zustand store for playlist editor panel */
@@ -52,6 +57,7 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
   playlistIds: [],
   playlistMap: new Map(),
   snapshotMap: new Map(),
+  currentTrack: null,
 
   addPlaylistId: async (playlistIdAndSnapshot, index, authSess) => {
     const playlistId = getPlaylistId(playlistIdAndSnapshot);
@@ -201,4 +207,9 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
       });
     }
   },
+
+  setCurrentTrack: (track: Track) =>
+    set(() => ({
+      currentTrack: track,
+    })),
 }));
