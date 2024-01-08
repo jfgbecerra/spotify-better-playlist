@@ -5,7 +5,7 @@ import { Card, CardBody } from '@nextui-org/card';
 import { Image } from '@nextui-org/image';
 import NextImage from 'next/image';
 import playlistIcon from '@/assets/music.svg';
-import { Skeleton } from '@nextui-org/react';
+import { Skeleton } from '@nextui-org/skeleton';
 import { useState } from 'react';
 
 type SidebarItemProps = {
