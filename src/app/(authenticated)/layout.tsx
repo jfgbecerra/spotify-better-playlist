@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { Inter } from 'next/font/google';
 import { getAuthSession } from '@/utils/serverUtils';
 import Providers from '@/providers';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,7 +31,10 @@ export default async function RootLayout({
   return (
     <html lang='en' className={theme} style={{ colorScheme: theme }}>
       <body className={inter.className}>
-        <Providers session={session}>{children}</Providers>
+        <Providers session={session}>
+          {children}
+          <SpeedInsights />
+        </Providers>
       </body>
     </html>
   );
