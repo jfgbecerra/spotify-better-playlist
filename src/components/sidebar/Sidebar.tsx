@@ -3,8 +3,10 @@ import { getAuthSession } from '@/utils/serverUtils';
 import SidebarItem from './SidebarItem';
 import DroppableContainer from '../DroppableContainer';
 import DraggableContainer from '../DraggableContainer';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function Sidebar() {
+  noStore();
   // Handle checking if the session is valid
   const session = await getAuthSession();
   if (!session) {
