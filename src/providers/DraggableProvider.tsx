@@ -17,9 +17,6 @@ type Props = {
 export default function DraggableProvider({ children, skip = false }: Props) {
   const { data: session } = useSession();
 
-  // If we are skipping, then just return the children
-  if (skip) return <>{children}</>;
-
   // Function to add a playlist id to the playlist editor pane
   const idExists = usePlaylistStore((state) => state.idExists);
   const addPlaylistsIds = usePlaylistStore((state) => state.addPlaylistId);
@@ -28,6 +25,9 @@ export default function DraggableProvider({ children, skip = false }: Props) {
 
   // State for modal
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  // If we are skipping, then just return the children
+  if (skip) return <>{children}</>;
 
   /**
    * Function to append a playlist to pane editor
@@ -67,7 +67,7 @@ export default function DraggableProvider({ children, skip = false }: Props) {
   /**
    * Function to handle drag and drop logic for the whole application
    */
-  const onDragEnd = useCallback((result: DropResult) => {
+  const onDragEnd = (result: DropResult) => {
     // If there is no destination, then return
     if (!result.destination) return;
 
@@ -96,7 +96,7 @@ export default function DraggableProvider({ children, skip = false }: Props) {
     else if (result.type === 'track') {
       handleMovingTrack(result, sourceId, destId, sourceInd, destInd);
     }
-  }, []);
+  };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
