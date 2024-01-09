@@ -7,6 +7,7 @@ import NextImage from 'next/image';
 import playlistIcon from '@/assets/music.svg';
 import { Button } from '@nextui-org/button';
 import { HeartIcon } from '@/assets/HeartIcon';
+import { useSession } from 'next-auth/react';
 
 type PlayerTrackInfoProps = {
   trackUrl?: string;
@@ -23,15 +24,21 @@ export default function PlayerTrackInfo({
 }: PlayerTrackInfoProps) {
   const [liked, setLiked] = useState(false);
 
+  // Handle checking if the session is valid
+  const { data: session } = useSession();
+  if (!session) {
+    return null;
+  }
+
   return (
     <Card className='border-none bg-transparent p-0 shadow-none'>
-      <CardBody className='p-2'>
+      <CardBody className='w-72 p-2'>
         <div className='flex h-full flex-row items-center justify-center gap-2'>
-          <div className='flex h-[50px] w-[50px] items-center justify-center rounded-small'>
+          <div className='flex h-[80px] w-[80px] items-center justify-center rounded-small'>
             {trackUrl ? (
               <Image
                 alt='Album cover'
-                className='rounded-small object-cover'
+                className='rounded-small object-fill'
                 src={trackUrl}
               />
             ) : (
@@ -45,7 +52,7 @@ export default function PlayerTrackInfo({
             )}
           </div>
 
-          <div className='flex w-full flex-col items-center justify-center overflow-hidden'>
+          <div className='flex w-full grow flex-col overflow-hidden'>
             <div className='flex flex-col gap-0 overflow-hidden'>
               {trackName ? (
                 <h3 className='truncate text-small font-semibold text-foreground/90'>
