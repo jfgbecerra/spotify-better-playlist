@@ -6,6 +6,8 @@ import NextImage from 'next/image';
 import playlistIcon from '@/assets/music.svg';
 import { Skeleton } from '@nextui-org/react';
 import { memo, useState } from 'react';
+import PlayTrackButton from '../buttons/PlayTrackButton';
+import { Track } from '@/types/track';
 
 type PlaylistEditorColumnItemProps = {
   /** The track name to render */
@@ -16,6 +18,8 @@ type PlaylistEditorColumnItemProps = {
 
   /** The album images to render */
   albumImageUrl: string;
+
+  track: Track;
 };
 
 // TODO: Update the skeleton to be calculated for each item instead of only using the image
@@ -24,6 +28,7 @@ export default memo(function PlaylistEditorColumnItem({
   trackName,
   artistNames,
   albumImageUrl,
+  track,
 }: PlaylistEditorColumnItemProps) {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
@@ -65,6 +70,10 @@ export default memo(function PlaylistEditorColumnItem({
                 <p className='text-small text-foreground/80'>{artistNames}</p>
               </Skeleton>
             </div>
+          </div>
+
+          <div>
+            <PlayTrackButton track={track} />
           </div>
         </div>
       </CardBody>

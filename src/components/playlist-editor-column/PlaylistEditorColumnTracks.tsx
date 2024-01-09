@@ -38,6 +38,7 @@ export default function PlaylistEditorColumnTracks({
               trackName={trackName}
               artistNames={artistNames}
               albumImageUrl={albumImageUrl}
+              track={trackWrapper.track}
             />
           </DraggableContainer>
         );
