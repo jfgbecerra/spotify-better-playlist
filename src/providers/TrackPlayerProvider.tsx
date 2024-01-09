@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Dispatch,
@@ -7,7 +7,7 @@ import {
   useContext,
   useEffect,
   useState,
-} from "react";
+} from 'react';
 import { usePlaylistStore } from '@/state/zustandState';
 
 interface TrackProviderState {
@@ -17,6 +17,7 @@ interface TrackProviderState {
   pause: () => void;
   togglePlay: () => Promise<void>;
   duration: number;
+  changeVolume: (vol: number) => void;
   currentTime: number;
   slider: number;
   setSlider: Dispatch<SetStateAction<number>>;
@@ -28,9 +29,11 @@ const PlayerContext = createContext<TrackProviderState>({} as any);
 
 interface Props {
   children: React.ReactNode;
+
+  skip: boolean;
 }
 
-export default function TrackPlayerProvider({ children }: Props) {
+export default function TrackPlayerProvider({ children, skip = false }: Props) {
   const { currentTrack } = usePlaylistStore();
 
   const [currentTrackAudio, setCurrentTrackAudio] =
@@ -61,12 +64,12 @@ export default function TrackPlayerProvider({ children }: Props) {
         currTime
           ? Number(((currTime * 100) / tempAudio.duration).toFixed(1))
           : 0
-          );
+      );
     };
 
-    tempAudio.addEventListener("loadeddata", setAudioData);
-    tempAudio.addEventListener("timeupdate", setAudioTime);
-    tempAudio.preload = "none";
+    tempAudio.addEventListener('loadeddata', setAudioData);
+    tempAudio.addEventListener('timeupdate', setAudioTime);
+    tempAudio.preload = 'none';
 
     setCurrentTrackAudio(tempAudio);
 
@@ -74,7 +77,7 @@ export default function TrackPlayerProvider({ children }: Props) {
       pause();
       setCurrentTrackAudio(null);
     };
-    }, [currentTrack]);
+  }, [currentTrack]);
 
   useEffect(() => {
     const handlePlay = async () => {
@@ -83,7 +86,7 @@ export default function TrackPlayerProvider({ children }: Props) {
       }
     };
     handlePlay();
-    }, [currentTrackAudio]);
+  }, [currentTrackAudio]);
 
   const togglePlay = async () => {
     if (isPlaying) pause();
@@ -100,33 +103,42 @@ export default function TrackPlayerProvider({ children }: Props) {
     currentTrackAudio?.pause();
   };
 
+  const changeVolume = (vol: number) => {
+    if (!currentTrackAudio) return;
+    currentTrackAudio.volume = vol;
+  };
+
   useEffect(() => {
     if (currentTrackAudio && drag) {
       currentTrackAudio.currentTime = Math.round(
         (drag * currentTrackAudio.duration) / 100
-        );
+      );
     }
   }, [drag]);
+
+  // If we are skipping, then just return the children
+  if (skip) return <>{children}</>;
 
   return (
     <PlayerContext.Provider
       value={{
-      currentTrackAudio,
+        currentTrackAudio,
         isPlaying,
         play,
         pause,
         togglePlay,
         duration,
+        changeVolume,
         currentTime,
         slider,
         setSlider,
         drag,
         setDrag,
       }}
-      >
+    >
       {children}
     </PlayerContext.Provider>
-    );
+  );
 }
 
 export const usePlayer = () => useContext(PlayerContext);

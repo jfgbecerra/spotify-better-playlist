@@ -6,6 +6,7 @@ import UIProvider from './UIProvider';
 import UIThemeProvider from './UIThemeProvider';
 import { ReactNode } from 'react';
 import DraggableProvider from './DraggableProvider';
+import TrackPlayerProvider from './TrackPlayerProvider';
 
 interface ProviderProps {
   /** Component children to render */
@@ -27,7 +28,11 @@ export default function Providers({
     <NextAuthProvider session={session}>
       <UIProvider>
         <UIThemeProvider>
-          <DraggableProvider skip={skipDraggable}>{children}</DraggableProvider>
+          <DraggableProvider skip={skipDraggable}>
+            <TrackPlayerProvider skip={skipDraggable}>
+              {children}
+            </TrackPlayerProvider>
+          </DraggableProvider>
         </UIThemeProvider>
       </UIProvider>
     </NextAuthProvider>
