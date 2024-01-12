@@ -7,6 +7,8 @@ import PlayerTrackExtraControls from './PlayerTrackExtraControls';
 import { usePlaylistStore } from '@/state/zustandState';
 import { useSession } from 'next-auth/react';
 
+// TODO: Need to edit this to center the player controls and attach the info and extra
+// controls to opposite sides of the player
 export default function Player() {
   const track = usePlaylistStore((state) => state.currentTrack);
 

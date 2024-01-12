@@ -1,4 +1,5 @@
 import { Image, Person } from './general';
+import { Tracks } from './track';
 export interface Playlist {
   description: string | null;
   href: string;
@@ -9,6 +10,7 @@ export interface Playlist {
   snapshot_id: string;
   uri: string;
   public: boolean;
+  tracks: Tracks;
 }
 
 export interface Playlists {
