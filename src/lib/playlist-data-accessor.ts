@@ -42,7 +42,7 @@ export const getPlaylistInfo = async (
   playlist_id: string
 ): Promise<Playlist> => {
   return customGet(
-    `${BASEURL}v1/playlists/${playlist_id}?fields=name,public,images,type,description,followers,owner(display_name,id)`,
+    `${BASEURL}v1/playlists/${playlist_id}?fields=name,public,images,type,description,followers,owner(display_name,id),tracks(total)`,
     session
   ).then((resp) => resp);
 };
