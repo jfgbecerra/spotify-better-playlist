@@ -10,7 +10,8 @@ type PlaylistEditorColumnHeaderProps = {
   /** The playlist id to render */
   playlistId: string;
 };
-
+// TODO: Cache image somehow to avoid flickering
+// as per https://github.com/hello-pangea/dnd/blob/main/docs/guides/avoiding-image-flickering.md
 export default function PlaylistEditorColumnHeader({
   playlistId,
 }: PlaylistEditorColumnHeaderProps) {
