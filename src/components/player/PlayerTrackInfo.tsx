@@ -31,7 +31,7 @@ export default function PlayerTrackInfo({
   }
 
   return (
-    <Card className='border-none bg-transparent p-0 shadow-none'>
+    <Card className='mr-auto border-none bg-transparent p-0 shadow-none'>
       <CardBody className='w-72 p-2'>
         <div className='flex h-full flex-row items-center justify-center gap-2'>
           <div className='flex h-[80px] w-[80px] items-center justify-center rounded-small'>

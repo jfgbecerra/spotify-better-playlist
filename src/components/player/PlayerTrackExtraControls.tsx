@@ -54,7 +54,7 @@ export default function PlayerTrackExtraControls() {
   };
 
   return (
-    <Card className='w-40 border-none bg-transparent p-0 shadow-none'>
+    <Card className='ml-auto w-40 border-none bg-transparent p-0 shadow-none'>
       <CardBody className='flex h-full w-full flex-row items-center overflow-hidden p-2'>
         <Button
           onClick={() => {
