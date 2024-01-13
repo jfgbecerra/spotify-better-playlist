@@ -5,6 +5,7 @@ import { AuthSession, Playlist } from '@/types';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { Image } from '@nextui-org/image';
+import { Card, CardBody } from '@nextui-org/react';
 
 type PlaylistEditorColumnHeaderProps = {
   /** The playlist id to render */
@@ -32,12 +33,14 @@ export default function PlaylistEditorColumnHeader({
 
   return (
     <div className='flex h-32 w-full flex-row items-center gap-3 bg-cardBackground p-3'>
-      <div className='flex h-28 w-28 items-center justify-center'>
-        <Image
-          className='h-28 w-28 rounded-sm object-fill'
-          src={coverUrl}
-          alt='Playlist cover'
-        />
+      <div>
+        <div className='flex h-28 w-28 items-center justify-center'>
+          <Image
+            className='h-28 w-28 rounded-sm object-fill'
+            src={coverUrl}
+            alt='Playlist cover'
+          />
+        </div>
       </div>
       <div className='flex h-full flex-col justify-end overflow-hidden'>
         <p className='text-sm'>Playlist</p>
