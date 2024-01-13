@@ -56,14 +56,10 @@ export default memo(function PlaylistEditorColumnItem({
 
           <div className='flex w-full items-start justify-between overflow-hidden'>
             <div className='flex flex-col gap-0 overflow-hidden'>
-              <Skeleton isLoaded={isLoaded} className='rounded-lg'>
-                <h3 className='truncate font-semibold text-foreground/90'>
-                  {trackName}
-                </h3>
-              </Skeleton>
-              <Skeleton isLoaded={isLoaded} className='rounded-lg'>
-                <p className='text-small text-foreground/80'>{artistNames}</p>
-              </Skeleton>
+              <h3 className='truncate font-semibold text-foreground/90'>
+                {trackName}
+              </h3>
+              <p className='text-small text-foreground/80'>{artistNames}</p>
             </div>
           </div>
 
