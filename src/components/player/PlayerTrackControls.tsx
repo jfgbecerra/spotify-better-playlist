@@ -1,11 +1,9 @@
 'use client';
-
-import { NextIcon } from '@/assets/NextIcon';
-import { PreviousIcon } from '@/assets/PreviousIcon';
 import { usePlayer } from '@/providers/TrackPlayerProvider';
 import { Card, CardBody, Slider, Button } from '@nextui-org/react';
 import React from 'react';
 import PlayPauseButton from '@/components/buttons/PlayPauseButton';
+import { SkipBack, SkipForward } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 
 export default function PlayerTrackControls() {
@@ -30,11 +28,11 @@ export default function PlayerTrackControls() {
       <CardBody className='flex flex-col overflow-hidden p-1'>
         <div className='flex h-8 w-full items-center justify-center'>
           <Button isIconOnly radius='full' variant='light'>
-            <PreviousIcon />
+            <SkipBack />
           </Button>
           <PlayPauseButton isPlaying={isPlaying} togglePlay={togglePlay} />
           <Button isIconOnly radius='full' variant='light'>
-            <NextIcon />
+            <SkipForward />
           </Button>
         </div>
 

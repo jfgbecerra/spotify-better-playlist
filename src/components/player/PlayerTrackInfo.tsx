@@ -3,10 +3,9 @@
 import React, { useState } from 'react';
 import { Card, CardBody } from '@nextui-org/card';
 import { Image } from '@nextui-org/image';
-import NextImage from 'next/image';
-import playlistIcon from '@/assets/music.svg';
 import { Button } from '@nextui-org/button';
 import { HeartIcon } from '@/assets/HeartIcon';
+import { Music } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 
 type PlayerTrackInfoProps = {
@@ -43,11 +42,7 @@ export default function PlayerTrackInfo({
               />
             ) : (
               <div className='flex h-[50px] w-[50px] items-center justify-center rounded-small'>
-                <NextImage
-                  className='rounded-small object-cover'
-                  src={playlistIcon}
-                  alt='Playlist Icon'
-                />
+                <Music />
               </div>
             )}
           </div>

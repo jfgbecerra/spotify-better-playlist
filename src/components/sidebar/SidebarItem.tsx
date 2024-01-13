@@ -3,8 +3,7 @@
 import { Playlist } from '@/types/playlist';
 import { Card, CardBody } from '@nextui-org/card';
 import { Image } from '@nextui-org/image';
-import NextImage from 'next/image';
-import playlistIcon from '@/assets/music.svg';
+import { Music } from 'lucide-react';
 import { Skeleton } from '@nextui-org/skeleton';
 import { useState } from 'react';
 
@@ -36,11 +35,7 @@ export default function SidebarItem({ playlist }: SidebarItemProps) {
               </Skeleton>
             ) : (
               <div className='flex h-[48px] w-[48px] items-center justify-center rounded-small bg-neutral-500'>
-                <NextImage
-                  src={playlistIcon}
-                  alt='Playlist Icon'
-                  onLoad={() => setIsLoaded(true)}
-                />
+                <Music />
               </div>
             )}
           </div>

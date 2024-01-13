@@ -3,9 +3,7 @@
 import { Button } from '@nextui-org/button';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import sunIcon from '@/assets/sun.svg';
-import moonIcon from '@/assets/moon.svg';
+import { Orbit, SunMedium } from 'lucide-react';
 
 export default function ThemeSwitcher() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -28,11 +26,7 @@ export default function ThemeSwitcher() {
         document.cookie = `theme=${newTheme}; path=/`;
       }}
     >
-      {resolvedTheme === 'dark' ? (
-        <Image src={sunIcon} alt='Sun Icon' />
-      ) : (
-        <Image src={moonIcon} alt='Moon Icon' />
-      )}
+      {resolvedTheme === 'dark' ? <SunMedium /> : <Orbit />}
     </Button>
   );
 }
