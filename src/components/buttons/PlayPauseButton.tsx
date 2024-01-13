@@ -1,10 +1,7 @@
 'use client';
 
-import { usePlaylistStore } from '@/state/zustandState';
 import { Button } from '@nextui-org/button';
-import Play from '@/assets/play-circle.svg';
-import Pause from '@/assets/pause-circle.svg';
-import Image from 'next/image';
+import { PlayCircle, PauseCircle } from 'lucide-react';
 
 type PlayPauseButtonProps = {
   isPlaying: boolean;
@@ -16,8 +13,6 @@ export default function PlayPauseButton({
   isPlaying,
   togglePlay,
 }: PlayPauseButtonProps) {
-  const setTrack = usePlaylistStore((state) => state.setCurrentTrack);
-
   // Show play button
   if (!isPlaying) {
     return (
@@ -29,7 +24,7 @@ export default function PlayPauseButton({
           togglePlay();
         }}
       >
-        <Image src={Play} alt='Play' />
+        <PlayCircle />
       </Button>
     );
   }
@@ -44,7 +39,7 @@ export default function PlayPauseButton({
         togglePlay();
       }}
     >
-      <Image src={Pause} alt='Pause' />
+      <PauseCircle />
     </Button>
   );
 }
