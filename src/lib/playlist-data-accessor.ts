@@ -6,6 +6,7 @@ import {
   Playlists,
   Tracks,
   Playlist,
+  User,
 } from '@/types';
 import { customDelete, customGet, customPost } from '@/utils/serverUtils';
 
@@ -115,4 +116,13 @@ export const addTracks = async (
     session,
     body
   ).then((resp) => resp);
+};
+
+/**
+ * Gets the current users profile.
+ *
+ * @returns {Promise<User>} - A Promise that resolves to the response of the add request.
+ */
+export const getCurrentUser = async (session: AuthSession): Promise<User> => {
+  return customGet(`${BASEURL}v1/me`, session).then((resp) => resp);
 };
