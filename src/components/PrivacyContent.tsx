@@ -24,14 +24,15 @@ export default function PrivacyContent() {
         <p>
           Better Playlist follows a standard procedure of using log files. These
           files log visitors when they visit websites. All hosting companies do
-          this and a part of hosting services' analytics. The information
+          this and a part of hosting services&apos; analytics. The information
           collected by log files include internet protocol (IP) addresses,
           browser type, Internet Service Provider (ISP), date and time stamp,
           referring/exit pages, and possibly the number of clicks. These are not
           linked to any information that is personally identifiable. The purpose
           of the information is for analyzing trends, administering the site,
-          tracking users' movement on the website, and gathering demographic
-          information. Our Privacy Policy was created with the help of the{' '}
+          tracking users&apos; movement on the website, and gathering
+          demographic information. Our Privacy Policy was created with the help
+          of the{' '}
           <a
             className='font-medium underline'
             href='https://www.privacypolicyonline.com/privacy-policy-generator/'
@@ -44,12 +45,12 @@ export default function PrivacyContent() {
         <h2 className='text-2xl font-bold'>Cookies and Web Beacons</h2>
 
         <p>
-          Like any other website, Better Playlist uses "cookies". These cookies
-          are used to store information including visitors' preferences, and the
-          pages on the website that the visitor accessed or visited. The
-          information is used to optimize the users' experience by customizing
-          our web page content based on visitors' browser type and/or other
-          information.
+          Like any other website, Better Playlist uses &quot;cookies&quot;.
+          These cookies are used to store information including visitors&apos;
+          preferences, and the pages on the website that the visitor accessed or
+          visited. The information is used to optimize the users&apos;
+          experience by customizing our web page content based on visitors&apos;
+          browser type and/or other information.
         </p>
 
         <p>
@@ -58,7 +59,7 @@ export default function PrivacyContent() {
             className='font-medium underline'
             href='https://www.privacypolicyonline.com/what-are-cookies/'
           >
-            "Cookies" article from the Privacy Policy Generator
+            &quot;Cookies&quot; article from the Privacy Policy Generator
           </a>
           .
         </p>
@@ -74,10 +75,10 @@ export default function PrivacyContent() {
           Third-party ad servers or ad networks uses technologies like cookies,
           JavaScript, or Web Beacons that are used in their respective
           advertisements and links that appear on Better Playlist, which are
-          sent directly to users' browser. They automatically receive your IP
-          address when this occurs. These technologies are used to measure the
-          effectiveness of their advertising campaigns and/or to personalize the
-          advertising content that you see on websites that you visit.
+          sent directly to users&apos; browser. They automatically receive your
+          IP address when this occurs. These technologies are used to measure
+          the effectiveness of their advertising campaigns and/or to personalize
+          the advertising content that you see on websites that you visit.
         </p>
 
         <p>
@@ -88,21 +89,21 @@ export default function PrivacyContent() {
         <h2 className='text-2xl font-bold'>Third Party Privacy Policies</h2>
 
         <p>
-          Better Playlist's Privacy Policy does not apply to other advertisers
-          or websites. Thus, we are advising you to consult the respective
-          Privacy Policies of these third-party ad servers for more detailed
-          information. It may include their practices and instructions about how
-          to opt-out of certain options.{' '}
+          Better Playlist&apos;s Privacy Policy does not apply to other
+          advertisers or websites. Thus, we are advising you to consult the
+          respective Privacy Policies of these third-party ad servers for more
+          detailed information. It may include their practices and instructions
+          about how to opt-out of certain options.{' '}
         </p>
 
         <p>
           You can choose to disable cookies through your individual browser
           options. To know more detailed information about cookie management
-          with specific web browsers, it can be found at the browsers'
+          with specific web browsers, it can be found at the browsers&apos;
           respective websites. What Are Cookies?
         </p>
 
-        <h2 className='text-2xl font-bold'>Children's Information</h2>
+        <h2 className='text-2xl font-bold'>Children&apos;s Information</h2>
 
         <p>
           Another part of our priority is adding protection for children while
