@@ -1,6 +1,6 @@
-import { Divider } from '@nextui-org/react';
 import PlaylistIcon from './PlaylistIcon';
 import Link from 'next/link';
+import PoweredByButton from './buttons/PoweredByButton';
 
 export default function Footer() {
   return (
@@ -12,6 +12,7 @@ export default function Footer() {
         </p>
       </div>
       <div className='flex h-full flex-row items-center gap-5 pr-10'>
+        <PoweredByButton />
         <Link href='/privacy'>Privacy</Link>
         <a href='mailto:hello@mixtl.co'>Contact</a>
         <p>
