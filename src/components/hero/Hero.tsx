@@ -1,6 +1,3 @@
-import Image from 'next/image';
-import HeroImage from '@/assets/spotify-better-playlist.vercel.app_cropped.png';
-import HeroImageLight from '@/assets/spotify-better-playlist.vercel.app_cropped_light.png';
 import { Button } from '@nextui-org/react';
 import HeroImages from './HeroImage';
 
