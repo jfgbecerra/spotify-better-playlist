@@ -1,5 +1,5 @@
-import { Button } from '@nextui-org/react';
 import HeroImages from './HeroImage';
+import GetStartedButton from '../buttons/GetStartedButton';
 
 export default function Hero() {
   return (
@@ -14,8 +14,9 @@ export default function Hero() {
             with Spotify, effortlessly organize and enhance your playlists
             experience.
           </p>
-          {/* TODO: Move this button to buttons components and make it link to the login page to be added */}
-          <Button className='w-28'>Get Started</Button>
+          <div className='w-28'>
+            <GetStartedButton />
+          </div>
         </div>
       </div>
       <div className='flex w-1/2 justify-center p-5'>
