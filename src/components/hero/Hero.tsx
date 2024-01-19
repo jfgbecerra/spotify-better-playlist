@@ -17,6 +17,7 @@ export default function Hero() {
             with Spotify, effortlessly organize and enhance your playlists
             experience.
           </p>
+          {/* TODO: Move this button to buttons components and make it link to the login page to be added */}
           <Button className='w-28'>Get Started</Button>
         </div>
       </div>
