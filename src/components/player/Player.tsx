@@ -1,13 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { memo } from 'react';
 import PlayerTrackInfo from './PlayerTrackInfo';
 import PlayerTrackControls from './PlayerTrackControls';
 import PlayerTrackExtraControls from './PlayerTrackExtraControls';
-import { usePlaylistStore } from '@/state/zustandState';
 import { useSession } from 'next-auth/react';
+import { usePlaylistStore } from '@/state/zustandState';
 
-export default function Player() {
+export default memo(function Player() {
   const track = usePlaylistStore((state) => state.currentTrack);
 
   // Handle checking if the session is valid
@@ -27,4 +27,4 @@ export default function Player() {
       <PlayerTrackExtraControls />
     </footer>
   );
-}
+});
