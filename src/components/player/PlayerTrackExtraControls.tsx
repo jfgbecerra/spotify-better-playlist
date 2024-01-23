@@ -3,23 +3,34 @@
 import React from 'react';
 import { Button, Card, CardBody, Slider } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
-import { usePlayer } from '@/providers/TrackPlayerProvider';
 import VolumeIcon, { VolumneLevel } from './VolumeIcon';
+import { usePlaylistStore } from '@/state/zustandState';
 
 // TODO: Add the current track in here so itll rerender and set the volume
 // That way the user wont reset it each time. Also look at adding it to global state and
 // Saving it to local storage so itll persist
 export default function PlayerTrackExtraControls() {
-  const { changeVolume } = usePlayer();
+  const vol = usePlaylistStore((state) => state.volume);
+  const setVol = usePlaylistStore((state) => state.changeVolume);
 
+  const [volume, _] = React.useState(vol * 100);
+  const getIcon = () => {
+    if (volume > 66) {
+      return VolumneLevel.Volume2;
+    } else if (volume > 33 && volume < 66) {
+      return VolumneLevel.Volume1;
+    } else if (volume > 0 && volume < 33) {
+      return VolumneLevel.Volume;
+    } else if (volume === 0) {
+      return VolumneLevel.VolumeX;
+    }
+  };
   const [loudLevel, setLoudLevel] = React.useState<VolumneLevel>(
-    VolumneLevel.VolumeX
+    VolumneLevel.Volume1
   );
 
-  const [volume, _] = React.useState(0);
-
   const setVolume = (value: number) => {
-    changeVolume(value / 100);
+    setVol(value / 100);
     _(value);
   };
 

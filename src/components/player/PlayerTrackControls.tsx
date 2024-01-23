@@ -1,21 +1,17 @@
 'use client';
-import { usePlayer } from '@/providers/TrackPlayerProvider';
-import { Card, CardBody, Slider, Button } from '@nextui-org/react';
+
+import { Card, CardBody, Button } from '@nextui-org/react';
 import React from 'react';
 import PlayPauseButton from '@/components/buttons/PlayPauseButton';
 import { SkipBack, SkipForward } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { usePlaylistStore } from '@/state/zustandState';
 
 export default function PlayerTrackControls() {
-  const {
-    isPlaying,
-    setSlider,
-    setDrag,
-    togglePlay,
-    duration,
-    currentTime,
-    slider,
-  } = usePlayer();
+  const isPaused = usePlaylistStore((state) => state.isPaused);
+  const togglePlay = usePlaylistStore((state) => state.togglePlay);
+  const next = usePlaylistStore((state) => state.next);
+  const previous = usePlaylistStore((state) => state.previous);
 
   // Handle checking if the session is valid
   const { data: session } = useSession();
@@ -25,35 +21,29 @@ export default function PlayerTrackControls() {
 
   return (
     <Card className='w-96 border-none bg-transparent p-0 shadow-none'>
-      <CardBody className='flex flex-col overflow-hidden p-1'>
+      <CardBody className='flex flex-col justify-center overflow-hidden p-1'>
         <div className='flex h-8 w-full items-center justify-center'>
-          <Button isIconOnly radius='full' variant='light'>
+          <Button
+            isIconOnly
+            radius='full'
+            variant='light'
+            onClick={() => {
+              previous();
+            }}
+          >
             <SkipBack />
           </Button>
-          <PlayPauseButton isPlaying={isPlaying} togglePlay={togglePlay} />
-          <Button isIconOnly radius='full' variant='light'>
+          <PlayPauseButton isPlaying={!isPaused} togglePlay={togglePlay} />
+          <Button
+            isIconOnly
+            radius='full'
+            variant='light'
+            onClick={() => {
+              next();
+            }}
+          >
             <SkipForward />
           </Button>
-        </div>
-
-        <div className='flex flex-col'>
-          <Slider
-            aria-label='Music progress'
-            classNames={{
-              track: 'bg-default-500/30',
-              thumb: 'w-1 h-1 after:w-1 after:h-1 after:bg-foreground',
-            }}
-            color='foreground'
-            size='sm'
-            value={Math.round(currentTime)}
-            maxValue={Math.round(duration)}
-          />
-          <div className='flex justify-between'>
-            <p className='text-tiny'>{Math.round(currentTime)}</p>
-            <p className='text-tiny text-foreground/50'>
-              {Math.round(duration)}
-            </p>
-          </div>
         </div>
       </CardBody>
     </Card>
