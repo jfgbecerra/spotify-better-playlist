@@ -1,28 +1,19 @@
 'use client';
 
-import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { usePlaylistStore } from '@/state/zustandState';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { AuthSession } from '@/types';
 
 interface TrackProviderState {
-  currentTrackAudio: HTMLAudioElement | null;
-  isPlaying: boolean;
+  isPaused: boolean;
+  isActive: boolean;
+  track: Spotify.Track | null;
   play: () => Promise<void>;
   pause: () => void;
+  next: () => void;
+  previous: () => void;
   togglePlay: () => Promise<void>;
-  duration: number;
   changeVolume: (vol: number) => void;
-  currentTime: number;
-  slider: number;
-  setSlider: Dispatch<SetStateAction<number>>;
-  drag: number;
-  setDrag: Dispatch<SetStateAction<number>>;
 }
 
 const PlayerContext = createContext<TrackProviderState>({} as any);
@@ -34,87 +25,97 @@ interface Props {
 }
 
 export default function TrackPlayerProvider({ children, skip = false }: Props) {
-  const { currentTrack } = usePlaylistStore();
+  const [isPaused, setPaused] = useState<boolean>(false);
+  const [isActive, setActive] = useState<boolean>(false);
+  const [player, setPlayer] = useState<Spotify.Player | null>(null);
+  const [track, setTrack] = useState<Spotify.Track | null>(null);
 
-  const [currentTrackAudio, setCurrentTrackAudio] =
-    useState<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [slider, setSlider] = useState(1);
-  const [drag, setDrag] = useState(0);
+  // Handle checking if the session is valid
+  const { data: session } = useSession();
 
   useEffect(() => {
-    if (!currentTrack) return;
-    if (isPlaying) {
-      pause();
-      setCurrentTrackAudio(null);
+    if (session) {
+      const script = document.createElement('script');
+      script.src = 'https://sdk.scdn.co/spotify-player.js';
+      script.async = true;
+
+      document.body.appendChild(script);
+
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        const player = new window.Spotify.Player({
+          name: 'Better Playlist Player',
+          getOAuthToken: (cb) => {
+            cb((session as AuthSession).user.accessToken);
+          },
+          volume: 0.5,
+        });
+
+        setPlayer(player);
+
+        player.addListener('ready', ({ device_id }) => {
+          console.log('Ready with Device ID', device_id);
+        });
+
+        player.addListener('not_ready', ({ device_id }) => {
+          console.log('Device ID has gone offline', device_id);
+        });
+
+        player.addListener('player_state_changed', (state) => {
+          if (!state) {
+            return;
+          }
+
+          setTrack(state.track_window.current_track);
+          setPaused(state.paused);
+
+          player.getCurrentState().then((state) => {
+            if (!state) {
+              setActive(false);
+            } else {
+              setActive(true);
+            }
+          });
+        });
+
+        player.connect().then((success) => {
+          if (success) {
+            console.log(
+              'The Web Playback SDK successfully connected to Spotify!'
+            );
+          }
+        });
+      };
     }
-    const tempAudio = new Audio(currentTrack.preview_url);
+  }, [session]);
 
-    const setAudioData = () => {
-      setDuration(tempAudio.duration);
-      setCurrentTime(tempAudio.currentTime);
-    };
-
-    const setAudioTime = () => {
-      const currTime = tempAudio.currentTime;
-      setCurrentTime(currTime);
-      setSlider(
-        currTime
-          ? Number(((currTime * 100) / tempAudio.duration).toFixed(1))
-          : 0
-      );
-    };
-
-    tempAudio.addEventListener('loadeddata', setAudioData);
-    tempAudio.addEventListener('timeupdate', setAudioTime);
-    tempAudio.preload = 'none';
-
-    setCurrentTrackAudio(tempAudio);
-
-    return () => {
-      pause();
-      setCurrentTrackAudio(null);
-    };
-  }, [currentTrack]);
-
-  useEffect(() => {
-    const handlePlay = async () => {
-      if (currentTrackAudio) {
-        await play();
-      }
-    };
-    handlePlay();
-  }, [currentTrackAudio]);
+  if (!session) {
+    return null;
+  }
 
   const togglePlay = async () => {
-    if (isPlaying) pause();
+    if (!isPaused) pause();
     else await play();
   };
 
   const play = async () => {
-    setIsPlaying(true);
-    await currentTrackAudio?.play();
+    await player?.resume();
   };
 
   const pause = () => {
-    setIsPlaying(false);
-    currentTrackAudio?.pause();
+    player?.pause();
+  };
+
+  const next = async () => {
+    await player?.nextTrack();
+  };
+
+  const previous = async () => {
+    await player?.previousTrack();
   };
 
   const changeVolume = (vol: number) => {
-    if (!currentTrackAudio) return;
-    currentTrackAudio.volume = vol;
+    player?.setVolume(vol);
   };
-
-  useEffect(() => {
-    if (currentTrackAudio && drag) {
-      currentTrackAudio.currentTime = Math.round(
-        (drag * currentTrackAudio.duration) / 100
-      );
-    }
-  }, [drag]);
 
   // If we are skipping, then just return the children
   if (skip) return <>{children}</>;
@@ -122,18 +123,15 @@ export default function TrackPlayerProvider({ children, skip = false }: Props) {
   return (
     <PlayerContext.Provider
       value={{
-        currentTrackAudio,
-        isPlaying,
+        isPaused,
+        isActive,
+        track,
         play,
         pause,
+        next,
+        previous,
         togglePlay,
-        duration,
         changeVolume,
-        currentTime,
-        slider,
-        setSlider,
-        drag,
-        setDrag,
       }}
     >
       {children}
