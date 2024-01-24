@@ -8,7 +8,12 @@ import {
   Playlist,
   User,
 } from '@/types';
-import { customDelete, customGet, customPost } from '@/utils/serverUtils';
+import {
+  customDelete,
+  customGet,
+  customPost,
+  customPut,
+} from '@/utils/serverUtils';
 
 const BASEURL = 'https://api.spotify.com/';
 
@@ -125,4 +130,23 @@ export const addTracks = async (
  */
 export const getCurrentUser = async (session: AuthSession): Promise<User> => {
   return customGet(`${BASEURL}v1/me`, session).then((resp) => resp);
+};
+
+/**
+ * Starts playing a specific track.
+ *
+ * @param {AuthSession} session - The session object containing the user's authentication information.
+ * @param {string[]} track_uris - The Spotify URI of the track to play.
+ * @returns {Promise<void>} - A Promise that resolves when the track starts playing.
+ */
+export const playTrack = async (
+  session: AuthSession | null,
+  track_uris: string[]
+): Promise<void> => {
+  const body = {
+    uris: track_uris,
+    position_ms: 0,
+  };
+
+  customPut(`${BASEURL}v1/me/player/play`, session, body);
 };

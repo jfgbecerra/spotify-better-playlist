@@ -66,6 +66,28 @@ export const customPost = async (
   return res;
 };
 
+export const customPut = async (
+  url: string,
+  session: AuthSession | null,
+  data: any = null
+) => {
+  if (!session) {
+    return null;
+  }
+
+  const options: RequestInit = {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${session.user.accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  };
+  if (data) {
+    options.body = JSON.stringify(data);
+  }
+  await fetch(url, options);
+};
+
 export const getAuthSession = async () => {
   const session = (await getServerSession(authOptions)) as AuthSession;
   if (!session) {
