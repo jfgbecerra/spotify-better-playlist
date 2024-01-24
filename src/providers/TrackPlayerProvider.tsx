@@ -16,6 +16,8 @@ export default function TrackPlayerProvider({ children, skip = false }: Props) {
   const setActive = usePlaylistStore((state) => state.setActive);
   const setPlayer = usePlaylistStore((state) => state.setPlayer);
   const setTrack = usePlaylistStore((state) => state.setCurrentTrack);
+  const setDuration = usePlaylistStore((state) => state.setDuration);
+  const setCurrPos = usePlaylistStore((state) => state.setCurrentPos);
 
   // Handle checking if the session is valid
   const { data: session } = useSession();
@@ -52,6 +54,8 @@ export default function TrackPlayerProvider({ children, skip = false }: Props) {
         }
 
         setTrack(state.track_window.current_track);
+        setDuration(state.duration);
+        setCurrPos(state.position);
         setPaused(state.paused);
 
         player.getCurrentState().then((state) => {
