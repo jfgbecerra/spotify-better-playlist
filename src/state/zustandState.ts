@@ -33,6 +33,12 @@ type State = {
 
   /* Volume level */
   volume: number;
+
+  /* Track being played length */
+  duration: number | null;
+
+  /* Current track position */
+  currPosition: number;
 };
 
 type Action = {
@@ -85,6 +91,12 @@ type Action = {
   /* Spotify player change volume */
   changeVolume: (volume: number) => void;
 
+  /* Spotify track duration */
+  setDuration: (len: number) => void;
+
+  /* Spotify set current track player position */
+  setCurrentPos: (pos: number) => void;
+
   /* Cleanup player */
   cleanupPlayer: () => void;
 };
@@ -100,6 +112,8 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
   player: null,
   track: null,
   volume: 0.5,
+  duration: null,
+  currPosition: 0,
 
   addPlaylistId: async (playlistIdAndSnapshot, index, authSess) => {
     const playlistId = getPlaylistId(playlistIdAndSnapshot);
@@ -323,6 +337,18 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
     };
 
     changeVolume(volume);
+  },
+
+  setDuration: (len: number) => {
+    set(() => ({
+      duration: len,
+    }));
+  },
+
+  setCurrentPos: (pos: number) => {
+    set(() => ({
+      currPosition: pos,
+    }));
   },
 
   cleanupPlayer: () => {
