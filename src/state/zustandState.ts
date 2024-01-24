@@ -39,6 +39,9 @@ type State = {
 
   /* Current track position */
   currPosition: number;
+
+  /* Device ID */
+  deviceId: string | null;
 };
 
 type Action = {
@@ -99,6 +102,9 @@ type Action = {
 
   /* Cleanup player */
   cleanupPlayer: () => void;
+
+  /* Set the device ID */
+  setDeviceId: (deviceId: string) => void;
 };
 
 /* Zustand store for playlist editor panel */
@@ -114,6 +120,7 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
   volume: 0.5,
   duration: null,
   currPosition: 0,
+  deviceId: null,
 
   addPlaylistId: async (playlistIdAndSnapshot, index, authSess) => {
     const playlistId = getPlaylistId(playlistIdAndSnapshot);
@@ -355,6 +362,12 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
     get().player?.disconnect();
     set(() => ({
       player: null,
+    }));
+  },
+
+  setDeviceId: (id: string) => {
+    set(() => ({
+      deviceId: id,
     }));
   },
 }));

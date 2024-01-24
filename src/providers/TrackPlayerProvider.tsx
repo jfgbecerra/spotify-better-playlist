@@ -18,11 +18,16 @@ export default function TrackPlayerProvider({ children, skip = false }: Props) {
   const setTrack = usePlaylistStore((state) => state.setCurrentTrack);
   const setDuration = usePlaylistStore((state) => state.setDuration);
   const setCurrPos = usePlaylistStore((state) => state.setCurrentPos);
+  const setDeviceId = usePlaylistStore((state) => state.setDeviceId);
 
   // Handle checking if the session is valid
   const { data: session } = useSession();
 
   useEffect(() => {
+    if (!session) {
+      return;
+    }
+
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     script.async = true;
@@ -41,11 +46,7 @@ export default function TrackPlayerProvider({ children, skip = false }: Props) {
       setPlayer(player);
 
       player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-      });
-
-      player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
+        setDeviceId(device_id);
       });
 
       player.addListener('player_state_changed', (state) => {
