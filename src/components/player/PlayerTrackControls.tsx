@@ -9,6 +9,8 @@ import { usePlaylistStore } from '@/state/zustandState';
 
 export default function PlayerTrackControls() {
   const isPaused = usePlaylistStore((state) => state.isPaused);
+  // const duration = usePlaylistStore((state) => state.duration);
+  // const currPos = usePlaylistStore((state) => state.currPosition);
   const togglePlay = usePlaylistStore((state) => state.togglePlay);
   const next = usePlaylistStore((state) => state.next);
   const previous = usePlaylistStore((state) => state.previous);
@@ -45,6 +47,24 @@ export default function PlayerTrackControls() {
             <SkipForward />
           </Button>
         </div>
+        {/*  TODO: Add this back in when I can figure out how to get the duration and current position
+        <div className='flex flex-col'>
+          <Slider
+            aria-label='Music progress'
+            classNames={{
+              track: 'bg-default-500/30',
+              thumb: 'w-1 h-1 after:w-1 after:h-1 after:bg-foreground',
+            }}
+            color='foreground'
+            size='sm'
+            value={currPos}
+            maxValue={duration ?? 0}
+          />
+          <div className='flex justify-between'>
+            <p className='text-tiny'>{currPos}</p>
+            <p className='text-tiny text-foreground/50'>{duration}</p>
+          </div>
+        </div> */}
       </CardBody>
     </Card>
   );

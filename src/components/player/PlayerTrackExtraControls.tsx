@@ -41,29 +41,30 @@ export default function PlayerTrackExtraControls() {
   }
 
   return (
-    <Card className='ml-auto w-40 border-none bg-transparent p-0 shadow-none'>
+    <Card className='w-40 border-none bg-transparent p-0 shadow-none'>
       <CardBody className='flex h-full w-full flex-row items-center overflow-hidden p-2'>
-        <Button
-          onClick={() => {
-            if (loudLevel === VolumneLevel.VolumeX) {
-              setVolume(50);
-              setLoudLevel(VolumneLevel.Volume1);
-            } else {
-              setVolume(0);
-              setLoudLevel(VolumneLevel.VolumeX);
-            }
-          }}
-          isIconOnly
-          className='bg-transparent'
-        >
-          <VolumeIcon loudLevel={loudLevel} />
-        </Button>
-
         <Slider
+          hideThumb
+          startContent={
+            <Button
+              onClick={() => {
+                if (loudLevel === VolumneLevel.VolumeX) {
+                  setVolume(50);
+                  setLoudLevel(VolumneLevel.Volume1);
+                } else {
+                  setVolume(0);
+                  setLoudLevel(VolumneLevel.VolumeX);
+                }
+              }}
+              isIconOnly
+              className='bg-transparent'
+            >
+              <VolumeIcon loudLevel={loudLevel} />
+            </Button>
+          }
           aria-label='Volume'
           classNames={{
             track: 'bg-default-500/30',
-            thumb: 'w-2 h-2 after:w-2 after:h-2 after:bg-foreground',
           }}
           color='foreground'
           value={volume}
