@@ -48,7 +48,7 @@ export const getPlaylistInfo = async (
   playlist_id: string
 ): Promise<Playlist> => {
   return customGet(
-    `${BASEURL}v1/playlists/${playlist_id}?fields=name,public,images,type,description,followers,owner(display_name,id),tracks(total)`,
+    `${BASEURL}v1/playlists/${playlist_id}?fields=name,public,images,type,description,followers,owner(display_name,id),tracks(total),uri`,
     session
   ).then((resp) => resp);
 };
@@ -145,6 +145,25 @@ export const playTrack = async (
 ): Promise<void> => {
   const body = {
     uris: track_uris,
+    position_ms: 0,
+  };
+
+  customPut(`${BASEURL}v1/me/player/play`, session, body);
+};
+
+/**
+ * Starts playing a specific playlist.
+ *
+ * @param {AuthSession} session - The session object containing the user's authentication information.
+ * @param {string[]} context_uri - The Spotify URI of the track to play.
+ * @returns {Promise<void>} - A Promise that resolves when the track starts playing.
+ */
+export const playPlaylist = async (
+  session: AuthSession | null,
+  context_uri: string
+): Promise<void> => {
+  const body = {
+    context_uri: context_uri,
     position_ms: 0,
   };
 
