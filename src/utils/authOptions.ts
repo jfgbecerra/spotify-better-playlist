@@ -1,7 +1,8 @@
 import { NextAuthOptions } from 'next-auth';
 import SpotifyProvider from 'next-auth/providers/spotify';
 
-const playback = 'streaming user-modify-playback-state';
+const playback =
+  'streaming user-modify-playback-state user-read-playback-state';
 const user = 'user-read-email user-read-private';
 const playlist =
   'playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative';

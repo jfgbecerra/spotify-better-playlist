@@ -8,6 +8,7 @@ import {
   Playlist,
   User,
 } from '@/types';
+import { Devices } from '@/types/device';
 import {
   customDelete,
   customGet,
@@ -168,4 +169,39 @@ export const playPlaylist = async (
   };
 
   customPut(`${BASEURL}v1/me/player/play`, session, body);
+};
+
+/**
+ * Changes main device for a playback.
+ *
+ * @param {AuthSession} session - The session object containing the user's authentication information.
+ * @param {string} device_ids - The Spotify device to set the playback to.
+ * @param {boolean} play - If the playback should start immediately.
+ * @returns {Promise<void>} - A Promise that resolves when the track starts playing.
+ */
+export const setPlayer = async (
+  session: AuthSession | null,
+  device_ids: string,
+  play?: boolean
+): Promise<void> => {
+  const body = {
+    device_ids: [device_ids],
+    position_ms: 0,
+    play: play ?? false,
+  };
+
+  customPut(`${BASEURL}v1/me/player`, session, body);
+};
+
+/**
+ * Gets the currect users devices.
+ *
+ * @returns {Promise<Devices>} - A Promise that resolves to the response of the add request.
+ */
+export const getUserDevices = async (
+  session: AuthSession
+): Promise<Devices> => {
+  return customGet(`${BASEURL}v1/me/player/devices`, session).then(
+    (resp) => resp
+  );
 };

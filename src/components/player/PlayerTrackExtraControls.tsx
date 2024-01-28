@@ -5,6 +5,7 @@ import { Button, Card, CardBody, Slider } from '@nextui-org/react';
 import { useSession } from 'next-auth/react';
 import VolumeIcon, { VolumneLevel } from './VolumeIcon';
 import { usePlaylistStore } from '@/state/zustandState';
+import ActiveDeviceButton from '../buttons/ActiveDeviceButton';
 
 // TODO: Add the current track in here so itll rerender and set the volume
 // That way the user wont reset it each time. Also look at adding it to global state and
@@ -43,6 +44,7 @@ export default function PlayerTrackExtraControls() {
   return (
     <Card className='w-40 border-none bg-transparent p-0 shadow-none'>
       <CardBody className='flex h-full w-full flex-row items-center overflow-hidden p-2'>
+        <ActiveDeviceButton />
         <Slider
           hideThumb
           startContent={
