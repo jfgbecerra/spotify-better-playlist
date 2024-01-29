@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useCallback } from 'react';
+import { ReactNode } from 'react';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { useSession } from 'next-auth/react';
 import { usePlaylistStore } from '@/state/zustandState';
