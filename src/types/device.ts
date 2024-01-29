@@ -4,7 +4,3 @@ export interface Device {
   name: string;
   type: string;
 }
-
-export interface Devices {
-  devices: Device[];
-}

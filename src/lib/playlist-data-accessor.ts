@@ -8,7 +8,7 @@ import {
   Playlist,
   User,
 } from '@/types';
-import { Devices } from '@/types/device';
+import { Device } from '@/types/device';
 import {
   customDelete,
   customGet,
@@ -200,7 +200,7 @@ export const setPlayer = async (
  */
 export const getUserDevices = async (
   session: AuthSession
-): Promise<Devices> => {
+): Promise<Device[]> => {
   return customGet(`${BASEURL}v1/me/player/devices`, session).then(
     (resp) => resp
   );

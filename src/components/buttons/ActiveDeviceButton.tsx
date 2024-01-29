@@ -1,9 +1,8 @@
 'use client';
 
-import { getUserDevices, setPlayer } from '@/lib/playlist-data-accessor';
-import { usePlaylistStore } from '@/state/zustandState';
+import { getUserDevices } from '@/lib/playlist-data-accessor';
 import { AuthSession } from '@/types';
-import { Devices } from '@/types/device';
+import { Device } from '@/types/device';
 import { Button } from '@nextui-org/button';
 import {
   Dropdown,
@@ -15,20 +14,11 @@ import { MonitorSpeaker } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
+// TODO: Figure out why this is is not pulling down the devices like it is supposed to
 export default function ActiveDeviceButton() {
-  const [deviceIds, setDeviceIds] = useState<Devices | null>(null);
-  const currId = usePlaylistStore((state) => state.deviceId);
+  const [deviceIds, setDeviceIds] = useState<Device[] | null>(null);
 
   const { data: session } = useSession();
-
-  // Set the current device id one time on boot
-  useEffect(() => {
-    // Set the current device id
-    const setDeviceActive = async () => {
-      await setPlayer(session as AuthSession, currId ?? '');
-    };
-    setDeviceActive();
-  }, []);
 
   useEffect(() => {
     if (!session) return;
@@ -53,7 +43,7 @@ export default function ActiveDeviceButton() {
       <DropdownMenu
         aria-label='Devices'
         onAction={(key) => alert(key)}
-        items={deviceIds?.devices}
+        items={deviceIds ?? []}
       >
         {(item) => (
           <DropdownItem
