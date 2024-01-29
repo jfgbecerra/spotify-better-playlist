@@ -17,7 +17,7 @@ export default function ContentPane() {
   return (
     <DroppableContainer
       id='playlist-editor-pane'
-      className='flex h-full w-full flex-row rounded-lg bg-cardBackground'
+      className='flex h-full w-full flex-row overflow-x-scroll rounded-lg bg-cardBackground'
       direction='horizontal'
       type='playlist'
     >
