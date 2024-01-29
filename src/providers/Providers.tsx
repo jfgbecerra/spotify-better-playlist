@@ -28,11 +28,7 @@ export default function Providers({
     <NextAuthProvider session={session}>
       <UIProvider>
         <UIThemeProvider>
-          <DraggableProvider skip={skipDraggable}>
-            <TrackPlayerProvider skip={skipDraggable}>
-              {children}
-            </TrackPlayerProvider>
-          </DraggableProvider>
+          <DraggableProvider skip={skipDraggable}>{children}</DraggableProvider>
         </UIThemeProvider>
       </UIProvider>
     </NextAuthProvider>

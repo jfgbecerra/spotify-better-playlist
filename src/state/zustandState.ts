@@ -20,7 +20,28 @@ type State = {
   playlistMap: Map<string, StateTracks>;
 
   /* Current track being played */
-  currentTrack: Track | null;
+  currentTrack: Spotify.Track | null;
+
+  /* Spotify is paused boolean */
+  isPaused: boolean;
+
+  /* Spotify player is active boolean */
+  isActive: boolean;
+
+  /* Spotify player object */
+  player: Spotify.Player | null;
+
+  /* Volume level */
+  volume: number;
+
+  /* Track being played length */
+  duration: number | null;
+
+  /* Current track position */
+  currPosition: number;
+
+  /* Device ID */
+  deviceId: string | null;
 };
 
 type Action = {
@@ -49,7 +70,41 @@ type Action = {
     authSess: AuthSession
   ) => void;
 
-  setCurrentTrack: (track: Track) => void;
+  /* Set the current track */
+  setCurrentTrack: (track: Spotify.Track) => void;
+
+  /* Set the track pause state */
+  setPaused: (isPaused: boolean) => void;
+
+  /* Set the player active state */
+  setActive: (isActive: boolean) => void;
+
+  /* Set the player object */
+  setPlayer: (player: Spotify.Player) => void;
+
+  /* Toggle player pause state */
+  togglePlay: () => void;
+
+  /* Spotify player next track */
+  next: () => void;
+
+  /* Spotify player previous track */
+  previous: () => void;
+
+  /* Spotify player change volume */
+  changeVolume: (volume: number) => void;
+
+  /* Spotify track duration */
+  setDuration: (len: number) => void;
+
+  /* Spotify set current track player position */
+  setCurrentPos: (pos: number) => void;
+
+  /* Cleanup player */
+  cleanupPlayer: () => void;
+
+  /* Set the device ID */
+  setDeviceId: (deviceId: string) => void;
 };
 
 /* Zustand store for playlist editor panel */
@@ -58,6 +113,14 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
   playlistMap: new Map(),
   snapshotMap: new Map(),
   currentTrack: null,
+  isPaused: false,
+  isActive: false,
+  player: null,
+  track: null,
+  volume: 0.5,
+  duration: null,
+  currPosition: 0,
+  deviceId: null,
 
   addPlaylistId: async (playlistIdAndSnapshot, index, authSess) => {
     const playlistId = getPlaylistId(playlistIdAndSnapshot);
@@ -208,8 +271,103 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
     }
   },
 
-  setCurrentTrack: (track: Track) =>
+  setCurrentTrack: (track: Spotify.Track) =>
     set(() => ({
       currentTrack: track,
     })),
+
+  setPaused: (isPaused: boolean) =>
+    set(() => ({
+      isPaused: isPaused,
+    })),
+
+  setActive: (isActive: boolean) =>
+    set(() => ({
+      isActive: isActive,
+    })),
+
+  setPlayer: (player: Spotify.Player) =>
+    set(() => ({
+      player: player,
+    })),
+
+  togglePlay: () => {
+    const play = async () => {
+      await get()
+        .player?.resume()
+        .then(() => {
+          set(() => ({
+            isPaused: false,
+          }));
+        });
+    };
+
+    const pause = () => {
+      get()
+        .player?.pause()
+        .then(() => {
+          set(() => ({
+            isPaused: true,
+          }));
+        });
+    };
+
+    const togglePlay = async () => {
+      if (!get().isPaused) pause();
+      else await play();
+    };
+
+    // toggle the play button
+    togglePlay();
+  },
+
+  next: () => {
+    const next = async () => {
+      await get().player?.nextTrack();
+    };
+
+    next();
+  },
+
+  previous: () => {
+    const previous = async () => {
+      await get().player?.previousTrack();
+    };
+
+    previous();
+  },
+
+  changeVolume: (volume: number) => {
+    const changeVolume = (vol: number) => {
+      get().player?.setVolume(vol);
+      set(() => ({ volume: vol }));
+    };
+
+    changeVolume(volume);
+  },
+
+  setDuration: (len: number) => {
+    set(() => ({
+      duration: len,
+    }));
+  },
+
+  setCurrentPos: (pos: number) => {
+    set(() => ({
+      currPosition: pos,
+    }));
+  },
+
+  cleanupPlayer: () => {
+    get().player?.disconnect();
+    set(() => ({
+      player: null,
+    }));
+  },
+
+  setDeviceId: (id: string) => {
+    set(() => ({
+      deviceId: id,
+    }));
+  },
 }));

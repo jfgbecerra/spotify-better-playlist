@@ -1,12 +1,13 @@
 import { NextAuthOptions } from 'next-auth';
 import SpotifyProvider from 'next-auth/providers/spotify';
 
-// TODO: Remove all unused scopes
-// TODO: Need to add token refresh rotation
-// See nextauth: https://authjs.dev/guides/basics/refresh-token-rotation
-// https://next-auth.js.org/v3/tutorials/refresh-token-rotation#server-side
-const scope =
-  'user-read-recently-played user-read-playback-state user-top-read user-modify-playback-state user-read-currently-playing user-follow-read playlist-read-private user-read-email user-read-private user-library-read playlist-read-collaborative playlist-modify-public playlist-modify-private';
+const playback =
+  'streaming user-modify-playback-state user-read-playback-state';
+const user = 'user-read-email user-read-private';
+const playlist =
+  'playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative';
+
+const scope = `${playback} ${user} ${playlist}`;
 
 export const authOptions: NextAuthOptions = {
   providers: [

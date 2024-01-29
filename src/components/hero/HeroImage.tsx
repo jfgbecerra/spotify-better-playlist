@@ -27,6 +27,7 @@ export default function HeroImages() {
   if (newTheme === 'dark') {
     return (
       <Image
+        priority
         className='rounded-lg border-3 border-gray-300'
         src={HeroImageLight}
         alt='Better Playlist Full Page Screenshot'
@@ -37,6 +38,7 @@ export default function HeroImages() {
   } else {
     return (
       <Image
+        priority
         className='rounded-lg border-3 border-cardBackground'
         src={HeroImage}
         alt='Better Playlist Full Page Screenshot'

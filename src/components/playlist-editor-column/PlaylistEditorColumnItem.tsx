@@ -27,7 +27,7 @@ export default memo(function PlaylistEditorColumnItem({
   track,
 }: PlaylistEditorColumnItemProps) {
   return (
-    <Card className='border-none bg-cardBackground px-2 shadow-none hover:bg-neutral-700'>
+    <Card className='border-none bg-cardBackground px-2 shadow-none hover:bg-neutral-200 dark:hover:bg-neutral-700'>
       <CardBody className='p-2'>
         <div className='flex h-full flex-row gap-2'>
           <div>

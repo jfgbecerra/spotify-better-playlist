@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import { getAuthSession } from '@/utils/serverUtils';
 import Providers from '@/providers';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import TrackPlayerProvider from '@/providers/TrackPlayerProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -32,7 +33,7 @@ export default async function RootLayout({
     <html lang='en' className={theme} style={{ colorScheme: theme }}>
       <body className={inter.className}>
         <Providers session={session}>
-          {children}
+          <TrackPlayerProvider skip={false}>{children}</TrackPlayerProvider>
           <SpeedInsights />
         </Providers>
       </body>

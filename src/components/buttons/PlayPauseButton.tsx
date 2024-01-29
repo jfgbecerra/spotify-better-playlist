@@ -6,7 +6,7 @@ import { PlayCircle, PauseCircle } from 'lucide-react';
 type PlayPauseButtonProps = {
   isPlaying: boolean;
 
-  togglePlay: () => Promise<void>;
+  togglePlay: () => void;
 };
 
 export default function PlayPauseButton({

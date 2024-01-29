@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { Image } from '@nextui-org/image';
 import { Card, CardBody } from '@nextui-org/react';
+import PlaylistEditorColumnControls from './PlaylistEditorColumnControls';
 
 type PlaylistEditorColumnHeaderProps = {
   /** The playlist id to render */
@@ -32,24 +33,27 @@ export default function PlaylistEditorColumnHeader({
   }, []);
 
   return (
-    <div className='flex h-32 w-full flex-row items-center gap-3 bg-cardBackground p-3'>
-      <div>
-        <div className='flex h-28 w-28 items-center justify-center'>
-          <Image
-            className='h-28 w-28 rounded-sm object-fill'
-            src={coverUrl}
-            alt='Playlist cover'
-          />
+    <div className='flex w-full flex-col items-center gap-2'>
+      <div className='flex h-32 w-full flex-row items-center gap-3 bg-cardBackground p-3'>
+        <div>
+          <div className='flex h-28 w-28 items-center justify-center'>
+            <Image
+              className='h-28 w-28 rounded-sm object-fill'
+              src={coverUrl}
+              alt='Playlist cover'
+            />
+          </div>
+        </div>
+        <div className='flex h-full flex-col justify-end overflow-hidden'>
+          <p className='text-sm'>Playlist</p>
+          <h1 className='truncate text-2xl'>{playlistInfo?.name}</h1>
+          <p className='text-sm'>
+            {playlistInfo?.owner.display_name} • {playlistInfo?.tracks.total}{' '}
+            songs
+          </p>
         </div>
       </div>
-      <div className='flex h-full flex-col justify-end overflow-hidden'>
-        <p className='text-sm'>Playlist</p>
-        <h1 className='truncate text-2xl'>{playlistInfo?.name}</h1>
-        <p className='text-sm'>
-          {playlistInfo?.owner.display_name} • {playlistInfo?.tracks.total}{' '}
-          songs
-        </p>
-      </div>
+      <PlaylistEditorColumnControls playlist={playlistInfo} />
     </div>
   );
 }
