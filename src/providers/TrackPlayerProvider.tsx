@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { AuthSession } from '@/types';
 import { usePlaylistStore } from '@/state/zustandState';
+import { setPlayer as setDevicePlayer } from '@/lib/playlist-data-accessor';
 
 interface Props {
   children: React.ReactNode;
@@ -47,6 +48,11 @@ export default function TrackPlayerProvider({ children, skip = false }: Props) {
 
       player.addListener('ready', ({ device_id }) => {
         setDeviceId(device_id);
+        const setDeviceActive = async () => {
+          await setDevicePlayer(session as AuthSession, device_id);
+        };
+
+        setDeviceActive();
       });
 
       player.addListener('player_state_changed', (state) => {
