@@ -6,6 +6,8 @@ import PlayPauseButton from '@/components/buttons/PlayPauseButton';
 import { SkipBack, SkipForward } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { usePlaylistStore } from '@/state/zustandState';
+import ShuffleButton from '../buttons/ShuffleButton';
+import RepeatButton from '../buttons/RepeatButton';
 
 export default function PlayerTrackControls() {
   const isPaused = usePlaylistStore((state) => state.isPaused);
@@ -25,6 +27,7 @@ export default function PlayerTrackControls() {
     <Card className='w-96 border-none bg-transparent p-0 shadow-none'>
       <CardBody className='flex flex-col justify-center overflow-hidden p-1'>
         <div className='flex h-8 w-full items-center justify-center'>
+          <ShuffleButton />
           <Button
             isIconOnly
             radius='full'
@@ -46,6 +49,7 @@ export default function PlayerTrackControls() {
           >
             <SkipForward />
           </Button>
+          <RepeatButton />
         </div>
         {/*  TODO: Add this back in when I can figure out how to get the duration and current position
         <div className='flex flex-col'>
