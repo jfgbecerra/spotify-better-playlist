@@ -20,6 +20,8 @@ export default function TrackPlayerProvider({ children, skip = false }: Props) {
   const setDuration = usePlaylistStore((state) => state.setDuration);
   const setCurrPos = usePlaylistStore((state) => state.setCurrentPos);
   const setDeviceId = usePlaylistStore((state) => state.setDeviceId);
+  const setShuffle = usePlaylistStore((state) => state.setShuffle);
+  const setRepeatMode = usePlaylistStore((state) => state.setRepeatMode);
 
   // Handle checking if the session is valid
   const { data: session } = useSession();
@@ -64,6 +66,8 @@ export default function TrackPlayerProvider({ children, skip = false }: Props) {
         setDuration(state.duration);
         setCurrPos(state.position);
         setPaused(state.paused);
+        setShuffle(state.shuffle);
+        setRepeatMode(state.repeat_mode);
 
         player.getCurrentState().then((state) => {
           if (!state) {

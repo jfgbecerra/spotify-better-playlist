@@ -205,3 +205,31 @@ export const getUserDevices = async (
     (resp) => resp
   );
 };
+
+/**
+ * Sets the repeat mode of the player.
+ *
+ * @param {AuthSession} session - The session object containing the user's authentication information.
+ * @param {string} state - The repeat state to set.
+ * @returns {Promise<void>} - A Promise that resolves when the repeat state is set.
+ */
+export const setRepeatMode = async (
+  session: AuthSession | null,
+  state: string
+): Promise<void> => {
+  customPut(`${BASEURL}v1/me/player/repeat?state=${state}`, session);
+};
+
+/**
+ * Starts playing a specific track.
+ *
+ * @param {AuthSession} session - The session object containing the user's authentication information.
+ * @param {boolean} shuffle - The shuffle state to set.
+ * @returns {Promise<void>} - A Promise that resolves when the shuffle state is set.
+ */
+export const setShuffleMode = async (
+  session: AuthSession | null,
+  shuffle: boolean
+): Promise<void> => {
+  customPut(`${BASEURL}v1/me/player/shuffle?state=${shuffle}`, session);
+};
