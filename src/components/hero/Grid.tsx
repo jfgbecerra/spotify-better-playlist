@@ -32,7 +32,7 @@ export default function Grid() {
       <h1 className='text-5xl font-extrabold leading-tight'>
         What Are the Benefits
       </h1>
-      <div className='flex gap-10 p-3'>{cardsUi}</div>
+      <div className='flex flex-wrap gap-10 p-3'>{cardsUi}</div>
     </div>
   );
 }

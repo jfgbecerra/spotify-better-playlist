@@ -3,7 +3,7 @@ import GetStartedButton from '../buttons/GetStartedButton';
 
 export default function Hero() {
   return (
-    <div className='flex w-full items-center'>
+    <div className='flex w-full flex-wrap items-center'>
       <div className='flex w-1/2 justify-center'>
         <div className='h-9/12 flex w-9/12 flex-col gap-10'>
           <h1 className='text-5xl font-extrabold leading-tight'>
