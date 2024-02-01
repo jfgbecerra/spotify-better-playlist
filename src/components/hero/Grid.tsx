@@ -29,10 +29,10 @@ export default function Grid() {
 
   return (
     <div className='my-20 flex w-full flex-col items-center gap-5'>
-      <h1 className='text-5xl font-extrabold leading-tight'>
+      <h1 className='text-center text-5xl font-extrabold leading-tight'>
         What Are the Benefits
       </h1>
-      <div className='flex flex-wrap gap-10 p-3'>{cardsUi}</div>
+      <div className='flex flex-wrap justify-center gap-10 p-3'>{cardsUi}</div>
     </div>
   );
 }
