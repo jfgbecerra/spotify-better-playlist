@@ -23,17 +23,24 @@ export default function LoginButton() {
   };
 
   return (
-    <Button className='bg-[#1DB954]' onClick={handleLogin}>
+    <Button className='bg-[#1DB954] p-6' onClick={handleLogin}>
       Login with
       {resolvedTheme === 'dark' ? (
         <Image
+          style={{ width: 'auto', height: 'auto' }}
           alt='Spotify Logo'
           height={30}
           width={80}
           src={SpotifyLogoWhite}
         />
       ) : (
-        <Image alt='Spotify Logo' height={20} width={70} src={SpotifyLogo} />
+        <Image
+          style={{ width: 'auto', height: 'auto' }}
+          alt='Spotify Logo'
+          height={20}
+          width={70}
+          src={SpotifyLogo}
+        />
       )}
     </Button>
   );

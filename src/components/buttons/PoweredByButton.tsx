@@ -13,7 +13,13 @@ export default function PoweredByButton() {
       href='https://www.spotify.com/'
     >
       Powered by Spotify
-      <Image alt='Spotify Logo' height={20} width={100} src={SpotifyLogo} />
+      <Image
+        style={{ width: 'auto', height: 'auto' }}
+        alt='Spotify Logo'
+        height={20}
+        width={100}
+        src={SpotifyLogo}
+      />
     </Link>
   );
 }

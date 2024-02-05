@@ -42,6 +42,12 @@ type State = {
 
   /* Device ID */
   deviceId: string | null;
+
+  /* Repeat mode */
+  repeatMode: number;
+
+  /* Shuffle mode */
+  shuffle: boolean;
 };
 
 type Action = {
@@ -105,6 +111,12 @@ type Action = {
 
   /* Set the device ID */
   setDeviceId: (deviceId: string) => void;
+
+  /* Set the repeat mode */
+  setRepeatMode: (mode: number) => void;
+
+  /* Set the shuffle mode */
+  setShuffle: (shuffle: boolean) => void;
 };
 
 /* Zustand store for playlist editor panel */
@@ -121,6 +133,8 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
   duration: null,
   currPosition: 0,
   deviceId: null,
+  repeatMode: 0,
+  shuffle: false,
 
   addPlaylistId: async (playlistIdAndSnapshot, index, authSess) => {
     const playlistId = getPlaylistId(playlistIdAndSnapshot);
@@ -368,6 +382,18 @@ export const usePlaylistStore = create<State & Action>((set, get) => ({
   setDeviceId: (id: string) => {
     set(() => ({
       deviceId: id,
+    }));
+  },
+
+  setRepeatMode: (mode: number) => {
+    set(() => ({
+      repeatMode: mode,
+    }));
+  },
+
+  setShuffle: (shuffle: boolean) => {
+    set(() => ({
+      shuffle: shuffle,
     }));
   },
 }));
