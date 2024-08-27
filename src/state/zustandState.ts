@@ -9,6 +9,7 @@ import { getPlaylistId, getPlaylistSnapshot } from './utils';
 
 // TODO: Need to do some major cleanup / refactor here. This is a mess.
 // Current logic allows decent speed for moving tracks back and forth but will need to look at moving multiple tracks at once.
+// Revisiting this a while later this is spaghetti.
 type State = {
   /* Array of playlist IDs */
   playlistIds: string[];
